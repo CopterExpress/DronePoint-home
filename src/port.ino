@@ -1,3 +1,7 @@
+// 1. движение и защиты с учетом данных энкодера
+// 2. интеграция custom mode операций cmodeOpr.ino
+// 3. обработка входных параметров custom mode операций port.ino
+
 //прием данных json с уарт паралленый таск
 static void vJsonParsingTask(void *pvParameters) {  
  for (;;) { String input;  
@@ -108,19 +112,19 @@ static void vJsonParsingTask(void *pvParameters) {
                      else if (command=="loading_charging_cell")   { AcSpec="CInst";   } //{"command":"loading_charging_cell"}
                      else if (command=="chargingKR1_cover_removing") { AcSpec="CUninst"; }  //{"command":"chargingKR1_cover_removing"} 
                      else if (command=="chargingKR1_cover_install")  { AcSpec="CInst";   }  //{"command":"chargingKR1_cover_install"}
-
+                     else if (command=="container_insert")    { AcSpec="CUP"; } //{"command":"container_insert"}
+                     else if (command=="container_removing")  { AcSpec="CDN"; } //{"command":"container_removing"}
+                     else if (command=="load_slot")    { AcSpec="loadSlot"; }   //{"command":"load_slot"} загрузка в отсек выдачи
+                     else if (command=="upload_slot")  { AcSpec="uploadSlot"; } //{"command":"upload_slot"} выгрузка из отсека выдачи
+                     //############## CUSTOM_MODE операции ##################################
                      else if (command=="cmOpld")     { AcSpec="cmOpld";     }  //{"command":"cmOpld"}
                      else if (command=="cmOpud")     { AcSpec="cmOpud";     }  //{"command":"cmOpud"}
                      else if (command=="cmOpuntu")   { AcSpec="cmOpuntu";   }  //{"command":"cmOpuntu"}
                      else if (command=="cmOpgetfu")  { AcSpec="cmOpgetfu";  }  //{"command":"cmOpgetfu"}
+                     else if (command=="cmOcls")     { AcSpec="cmOcls";     }  //{"command":"cmOcls"}
+                     else if (command=="cmOopn")     { AcSpec="cmOopn";     }  //{"command":"cmOopn"}
+                     else if (command=="cmOchan")    { AcSpec="cmOchan";    }  //{"command":"cmOchan"}
                   
-                     else if (command=="checking container front")  { AcSpec="CHK_F"; } //{"command":"checking container front"}
-                     else if (command=="checking container back")   { AcSpec="CHK_B"; } //{"command":"checking container back"}
-                     else if (command=="container_insert")    { AcSpec="CUP"; } //{"command":"container_insert"}
-                     else if (command=="container_removing")  { AcSpec="CDN"; } //{"command":"container_removing"}
-                     else if (command=="load_slot")    { AcSpec="loadSlot"; }   //{"command":"load_slot"} загрузка в отсек выдачи
-                     else if (command=="upload_slot")  { AcSpec="uploadSlot"; } //{"command":"upload_slot"} выгрузка из отсека выдачи  
-
                      //########### комманды тестирования отдельных элементов и сценариев ########################
                      else if (command=="Ztest")    { AcTest="Ztest"; } //{"command":"Ztest"} тест оси Z
                      else if (command=="Ytest")    { AcTest="Ytest"; } //{"command":"Ytest"} тест оси Y
@@ -167,10 +171,10 @@ static void vJsonParsingTask(void *pvParameters) {
 
 //отсылки данных json по уарт паралленый таск
 static void vSendTask(void *pvParameters) {
-    for (;;) {       StaticJsonBuffer<220> jsonBuffer1;
-                     JsonObject& root1 = jsonBuffer1.createObject();
-                     
-                     if (nSen==0)
+    vTaskDelay(1200);
+    for (;;) {      StaticJsonBuffer<250> jsonBuffer1;
+                    JsonObject& root1 = jsonBuffer1.createObject(); 
+                    if (nSen==0)
                         { root1["StatusX"] = StatusX;
                           root1["StatusZ"] = StatusZ;
                           root1["StatusY"] = StatusY;
@@ -187,34 +191,45 @@ static void vSendTask(void *pvParameters) {
                                                 // 3=передняя ячейка 1=задняя
                           root1["platform_payload_state"] = StatusKkr; //концевики каретки
                           root1["count"] = cnum; //счетчик комманд
-                          root1["scales_state"] = units; // данные с весов                      
-                          //root1["MOT"] = MOT;
-                          //root1["Mval"] = Mval;
-                          //root1["SERV"] = SERV;
+                          root1["scales_state"] = units; // данные с весов 
+                          root1["chargingKR0_availability"] = VBkr0; // наличие и напряжение крышки KR0                     
                           nSen+=1;
                         }
                      else if (nSen==2)
-                        { root1["chargingKR0_availability"] = VBkr0; // наличие и напряжение крышки KR0
+                        { root1["pOV"] = sOV; // позиция отсека выдачи sOV="none" sOV="ov"
+                          root1["pDN"] = sDN; // поция операций с дроном sDN="none" sDN="dn"
+                          root1["Pld"] = Pld; // завершение операции LOAD_DRONE
+                          root1["Pud"] = Pud; // завершение операции UNLOAD_DRONE
+                          root1["Puntu"]  = Puntu; // завершение операции UNLOAD_TO_USER
+                          root1["Pgetfu"] = Pgetfu; // завершение операции GET_FROM_USER
+                          root1["Pcls"]  = Pcls; // завершение операции CLOSE
+                          root1["Popn"]  = Popn; // завершение операции OPEN
+                          root1["Pchan"]  = Pchan; // завершение операции CHANGING_BATTERY
+                          if (Pld=="compl")    { Pld="none";    }
+                          if (Pud=="compl")    { Pud="none";    }
+                          if (Puntu=="compl")  { Puntu="none";  }
+                          if (Pgetfu=="compl") { Pgetfu="none"; }
+                          if (Pcls=="compl")   { Pcls="none";   }
+                          if (Popn=="compl")   { Popn="none";   }
+                          if (Pchan=="compl")  { Pchan="none";  }
                           nSen+=1;
                         }
-                     else if (nSen==3)
-                        { root1["chargingKR0_availability"] = VBkr0; // наличие и напряжение крышки KR0
-                          nSen+=1;
-                        }
-                     else if (nSen==4)
-                        { vTaskDelay(130);
+            /*      else if (nSen==5)
+                        { //vTaskDelay(130);
                           //debugout4021();
                           //vTaskDelay(130);
                           debugoutKONS();
+                          //dlMeter();
                           //debugoutDIR();
-                          nSen+=1;
-                        }
+                          nSen+=1; 
+                        }                     */
                      
-                     root1.printTo(Serial);
-                     Serial.print('\n'); // \n
-                     vTaskDelay(700);
-                     if (nSen>4) { nSen=0; }
                   
+                     root1.printTo(Serial);
+                     Serial.print('\n'); 
+                                          
+                     vTaskDelay(750);
+                     if (nSen>2) { nSen=0; }
              }
 }
 

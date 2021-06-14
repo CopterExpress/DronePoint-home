@@ -333,6 +333,26 @@ boolean Vlv=0,Vln=0,Vld=0,Vlz=0;
 //статус верхнего люка
 String StatusVL="unknown";
 
+//############## CUSTOM_MODE параметры #################
+uint8_t cmx=99;
+uint8_t cmy=99;
+uint8_t cmz=99;
+uint8_t cmkr=99;
+
+//статусы для пиндингов верх. уровня
+String sOV="none";
+String sDN="none";
+String Pld="none";
+String Pud="none";
+String Puntu="none";
+String Pgetfu="none";
+String Pcls="none";
+String Popn="none";
+String Pchan="none";
+
+//флаги запуска тасков для операций CUSTOM_MODE
+boolean TOVL=false;
+boolean TCVL=false;
 
 //глобальный массив хранения json данных
 char json[160] =""; 

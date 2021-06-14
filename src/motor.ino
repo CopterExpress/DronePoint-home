@@ -4,8 +4,8 @@ static void motorZ(byte direct)
      if      (direct==0)    { shm1=0; shm2=0;     } //стоп
      else if (direct==1)    { shm1=65000; shm2=0; } //вперет 65000
      else if (direct==2)    { shm1=0; shm2=42500; } //назат 42500
-     if ((StatusZ=="ZmoveZ4")&&(direct==1)) { shm1=45000;  } //крышка
-     if ((StatusZ=="ZmoveZ5")&&(direct==1)) { shm1=45000;  } //контейнер
+     if ((StatusZ=="ZmoveZ4")&&(direct==1)) { shm1=45000; shm2=0;  } //крышка
+     if ((StatusZ=="ZmoveZ5")&&(direct==1)) { shm1=45000; shm2=0;  } //контейнер
      pwmWrite(zpwm1,shm1);
      pwmWrite(zpwm2,shm2);
    }    
@@ -14,8 +14,8 @@ static void motorZ(byte direct)
 static void motorY(byte direct) 
    { boolean shm1,shm2;
      if      (direct==0)   { shm1=0; shm2=0; } //стоп
-     else if (direct==1)   { shm1=1; shm2=0; } //вперет
-     else if (direct==2)   { shm1=0; shm2=1; } //назат
+     else if (direct==1)   { shm1=1; shm2=0; } //вперет к Y3pered
+     else if (direct==2)   { shm1=0; shm2=1; } //назат к Y1zad
      digitalWrite(ypwm1, shm1);
      digitalWrite(ypwm2, shm2);
    } 
@@ -98,7 +98,8 @@ static void motKR0(byte direct)
 
  //серва замок контейнера 
  static void servLockCon(boolean direct)  
-  {  if ((direct)&&(s_trig))//закрыть
+  {  vTaskDelay(330);
+     if ((direct)&&(s_trig))//закрыть
             {  for (int pulselen=SERVOMAX; pulselen>SERVOMIN; pulselen-=22) 
                     {  pwm.setPWM(conLock, 0, pulselen); vTaskDelay(6); }
                s_trig=false;

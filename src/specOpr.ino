@@ -17,6 +17,7 @@ static void loadingCELL()
 //выгрузка из передней ячейки
 static void vygruzkaKP()   
        {  //{"command":"VKP"}
+          vTaskDelay(180);
           if (StatusKkr=="free") { 
           meZ=StatusZ; 
           int Zdw,Zup;
@@ -38,7 +39,7 @@ static void vygruzkaKP()
                  vTaskDelay(120);
                  //Y выдвинут
                  Zjump(Zup); //поднимаемся Z вверх цепляем контейнер
-                 //работа гусеницы загружаем контейнер
+                 //работа гусеницы выгружаем контейнер
                  //пока не сработает концевик на каретке движение не более 9сек.
                  unsigned long gustrack=millis();
                  for(;;)
@@ -63,6 +64,7 @@ static void vygruzkaKP()
 //загрузка в переднею ячейку
 static void zagruzkaKP() 
        {  //{"command":"ZKP"}
+          vTaskDelay(180);
           if (StatusKkr=="loaded") { 
           meZ=StatusZ; 
           int Zdw,Zup;
@@ -83,15 +85,19 @@ static void zagruzkaKP()
                   Y3Block();
                   vTaskDelay(120);
                   //Y выдвинут
-                  //работа гусеницы выгружаем контейнер
+                  //работа гусеницы загружаем контейнер
                   //движение не более 5сек.
                   unsigned long gustrack=millis();
                   for(;;)
-                       {  gusmotor(2);  
+                       {  //при сработки концевиков в передних ячейках gusmotor(0) и  break;
+                          if      ((meZ=="Z0")&&(Z0Y3)) { gusmotor(0); vTaskDelay(200); if (Z0Y3) { gusmotor(0); break; }}
+                          else if ((meZ=="Z2")&&(Z2Y3)) { gusmotor(0); vTaskDelay(200); if (Z2Y3) { gusmotor(0); break; }}
+                          else if ((meZ=="Z3")&&(Z3Y3)) { gusmotor(0); vTaskDelay(200); if (Z3Y3) { gusmotor(0); break; }}
                           //при сработке таймера  gusmotor(0) и  break;
-                          if ((millis()-gustrack)>5100) { gusmotor(0); break; }
+                          if ((millis()-gustrack)>5600) { gusmotor(0); break; }
+                          gusmotor(2);
                        } 
-                  //контейнер выгружен    
+                  //контейнер загружен    
                   Zjump(Zdw); //опускаем Z контейнер не цепляет
                   //задвигаем Y на Y2center
                   Y2Block();
@@ -111,6 +117,7 @@ static void zagruzkaKP()
 //выгрузка из задней ячейки
 static void vygruzkaKZ()   
        {  //{"command":"VKZ"}
+          vTaskDelay(180);
           if (StatusKkr=="free") { 
           meZ=StatusZ; 
           int Zdw,Zup;
@@ -131,7 +138,7 @@ static void vygruzkaKZ()
                  vTaskDelay(120);
                  //Y выдвинут
                  Zjump(Zup); //поднимаемся Z вверх цепляем контейнер
-                 //работа гусеницы загружаем контейнер
+                 //работа гусеницы выгружаем контейнер
                  //пока не сработает концевик на каретке движение не более 9сек.
                  unsigned long gustrack=millis();
                  for(;;)
@@ -156,6 +163,7 @@ static void vygruzkaKZ()
 //загрузка в заднею ячейку
 static void zagruzkaKZ() 
        {  //{"command":"ZKZ"}
+          vTaskDelay(180);
           if (StatusKkr=="loaded") { 
           meZ=StatusZ; 
           int Zdw,Zup;
@@ -175,15 +183,20 @@ static void zagruzkaKZ()
                   Y1Block();
                   vTaskDelay(120);
                   //Y выдвинут
-                  //работа гусеницы выгружаем контейнер
+                  //работа гусеницы загружаем контейнер
                   //движение не более 5сек.
                   unsigned long gustrack=millis();
                   for(;;)
-                       {  gusmotor(1);  
+                       {  //при сработки концевиков в задних ячейках gusmotor(0) и  break;
+                          if      ((meZ=="Z0")&&(Z0Y1)) { gusmotor(0); vTaskDelay(200); if (Z0Y1) { gusmotor(0); break; }}
+                          else if ((meZ=="Z1")&&(Z1Y1)) { gusmotor(0); vTaskDelay(200); if (Z1Y1) { gusmotor(0); break; }}
+                          else if ((meZ=="Z2")&&(Z2Y1)) { gusmotor(0); vTaskDelay(200); if (Z2Y1) { gusmotor(0); break; }}
+                          else if ((meZ=="Z3")&&(Z3Y1)) { gusmotor(0); vTaskDelay(200); if (Z3Y1) { gusmotor(0); break; }}
                           //при сработке таймера  gusmotor(0) и  break;
-                          if ((millis()-gustrack)>5100) { gusmotor(0); break; }
+                          if ((millis()-gustrack)>5600) { gusmotor(0); break; }
+                          gusmotor(1);
                        } 
-                  //контейнер выгружен    
+                  //контейнер загружен    
                   Zjump(Zdw); //опускаем Z контейнер не цепляет
                   //задвигаем Y на Y2center
                   Y2Block();
@@ -224,7 +237,8 @@ static void closeVL()
 
 //подъем и спуск верхнего люка
 static void vlps(boolean direct) 
-      {  unsigned long vltrack;
+      {  vTaskDelay(180);
+         unsigned long vltrack;
          if ((direct)&&(Vld)) //подъем допускается при выдвинутом положении
              { vltrack=millis();
                for(;;)
@@ -249,7 +263,8 @@ static void vlps(boolean direct)
 
 //выдвинуть и задвинуть верхний люк
 static void vlvz(boolean direct) 
-      {  unsigned long vltrack;
+      {  vTaskDelay(180);
+         unsigned long vltrack;
          if ((direct)&&(Vln)) //выдвинуть 
              { vltrack=millis(); 
                for(;;)
@@ -274,7 +289,8 @@ static void vlvz(boolean direct)
 
 //открыть и закрыть замок крышки KR0
 static void lockKR0(boolean direct) 
-      {  unsigned long zmtrack;
+      {  vTaskDelay(180);
+         unsigned long zmtrack;
          if (direct) //открыть
              { zmtrack=millis(); 
                for(;;)
@@ -295,7 +311,8 @@ static void lockKR0(boolean direct)
 
 //открыть или закрыть люк отсека выдачи
 static void ovopcl(boolean direct) 
-      {  unsigned long ovtrack;
+      {  vTaskDelay(180);
+         unsigned long ovtrack;
          if ((direct)&&(!ovv)) //открыть 
              { OprSt="bottom hatch opening.. .";
                ovsolenoid(1);
@@ -332,7 +349,8 @@ static void ovopcl(boolean direct)
 
 //установка крышки в зарядку 
 static void CoverInst()   
-  {     if ((!KR0n)&&(pKR=="KR0"))
+  {     vTaskDelay(180);
+        if ((!KR0n)&&(pKR=="KR0"))
             { OprSt="coverKR0 installed.. .";
               vTaskDelay(120);
               lockKR0(1);//открываем замок 
@@ -348,7 +366,8 @@ static void CoverInst()
 
 //снятие крышки c зарядки   
 static void CoverUninst()   
-  {     if ((KR0n)&&(pKR=="KR0")) 
+  {     vTaskDelay(180);
+        if ((KR0n)&&(pKR=="KR0")) 
              { OprSt="coverKR0 uninstalled.. .";
                vTaskDelay(120);
                Z4Block();  //Z4 уровень крышек
@@ -365,7 +384,8 @@ static void CoverUninst()
 
  //вставка контейнера в коптер
  static void contenerUP() 
-    {  if ((Vln)&&(Vlz)&&(pDN)&&((cnt1)||(cnt2)))  
+    {  vTaskDelay(180);
+       if ((Vln)&&(Vlz)&&(pDN)&&((cnt1)||(cnt2)))  
          { OprSt="insert container.. .";
            servLockCon(0); //открыть замок контейнера
            vTaskDelay(910);
@@ -384,7 +404,8 @@ static void CoverUninst()
 
 //снятие контейнера из коптера
  static void contenerDN() 
-    {  if ((Vln)&&(Vlz)&&(pDN)&&(!cnt1)&&(!cnt2))  
+    {  vTaskDelay(180);
+       if ((Vln)&&(Vlz)&&(pDN)&&(!cnt1)&&(!cnt2))  
          { OprSt="removing container.. .";
            Y2Block();
            vTaskDelay(200);

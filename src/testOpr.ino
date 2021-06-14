@@ -298,54 +298,65 @@ static void vTest(void *pvParameters) {
 static void vBTcheckTask(void *pvParameters) {
    vTaskDelay(305); 
    for (;;) {  if  (digitalRead(pBT0)==LOW)  
-                      { motorZ(1);
+                      { motorZ(1);//вперет
                         vTaskDelay(44);
                         Serial.println("BT0");
                         motorZ(0);
                       }
                if  (digitalRead(pBT1)==LOW)  
-                      { motorZ(2);
+                      { motorZ(2);//назат
                         vTaskDelay(44);
                         Serial.println("BT1");
                         motorZ(0);
                       }
                if  (digitalRead(pBT2)==LOW)  
-                      { 
+                      { motorY(1);//вперет к Y3pered
                         vTaskDelay(44);
-                        
+                        //Serial.println("BT2");
+                        motorY(0);
                       }
                       
                if  (digitalRead(pBT3)==LOW)
-                      { /*##################*/ }
+                      { motorY(2);//назат к Y1zad
+                        vTaskDelay(44);
+                        //Serial.println("BT3");
+                        motorY(0);
+                      }
 
                if  (digitalRead(pBT4)==LOW)
-                      {
-                        vTaskDelay(44);
-                        
+                      { ovmotor(1); vTaskDelay(44); ovmotor(0); //открыть
+                        //gusmotor(1); vTaskDelay(44); gusmotor(0); //выгрузка
+                        //vlpmotor(1); vTaskDelay(44); vlpmotor(0); //подъем
+                        //vlzmotor(1); vTaskDelay(44); vlzmotor(0); //выдвинуть
+                        //motKR0(1); vTaskDelay(44); motKR0(0);   //открыть
+                        //servLockCon(0); //открыть замок контейнера
                       }
                if  (digitalRead(pBT5)==LOW)  
-                      { /*################*/ }
+                      { ovmotor(2); vTaskDelay(44); ovmotor(0); //закрыть
+                        //gusmotor(2); vTaskDelay(44); gusmotor(0); //загрузка
+                        //vlpmotor(2); vTaskDelay(44); vlpmotor(0); //спуск
+                        //vlzmotor(2); vTaskDelay(44); vlzmotor(0); //задвинуть
+                        //motKR0(2); vTaskDelay(44); motKR0(0);   //закрыть
+                        //servLockCon(1); //закрыть замок контейнера
+                      }
                
                if  (digitalRead(pBT6)==LOW)  
-                      { //plmotor(1);
-                        //motKR3(1); //открыть
-                        //vTaskDelay(44);
-                        //motKR3(0);
-                      }  
+                      { motorSlX(1); vTaskDelay(44); motorSlX(0); //вперет
+                        //motorSlY(1); vTaskDelay(44); motorSlY(0); //вперет
+                      } 
+
                if  (digitalRead(pBT7)==LOW)  
-                      { //plmotor(2);
-                        //motKR3(2); //закрыть
-                        //vTaskDelay(44);
-                        //motKR3(0);   
+                      { motorSlX(2); vTaskDelay(44); motorSlX(0); //назат
+                        //motorSlY(2); vTaskDelay(44); motorSlY(0); //назат
                       }
+
                if  (digitalRead(pBT8)==LOW)  
-                      { //открыть
-                        //lockKR2(1);
-                        //vTaskDelay(6000);  
+                      { //Serial.println("BT8");
+
                       }
                if  (digitalRead(pBT9)==LOW)  
-                      { //закрыть
-                        //lockKR2(0);
+                      { //Serial.println("BT9");
+
                       } 
             }
 }   

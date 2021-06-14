@@ -34,17 +34,17 @@ static void vStateForm(void *pvParameters) {
                if      ((KY2)&&(KZ3)&&(KX0)&&(Vlv)&&(Vld))  { pKR="KR0"; }
                else    { pKR="unknown"; }
                //######### БЛОКИРОВКА ОПЕРАЦИЙ ПОГРУЗКИ ##################
-               //по умолчанию разрешенно для передних BPP=1 и задних BPZ=1
-               BPP=1; BPZ=1;
-               //если есть контейнер в передних
+               //если есть контейнер в передних ячейках
                if       ((KZ0)&&(KX0)&&(Z0Y3)) { BPP=0; }
                else if  ((KZ2)&&(KX0)&&(Z2Y3)) { BPP=0; }
                else if  ((KZ3)&&(KX0)&&(Z3Y3)) { BPP=0; }
-               //если есть контейнер в задних
+               else     {  BPP=1; } //разрешенно
+               //если есть контейнер в задних ячейках
                if       ((KZ0)&&(KX0)&&(Z0Y1)) { BPZ=0; }
                else if  ((KZ1)&&(KX0)&&(Z1Y1)) { BPZ=0; }
                else if  ((KZ2)&&(KX0)&&(Z2Y1)) { BPZ=0; }
                else if  ((KZ3)&&(KX0)&&(Z3Y1)) { BPZ=0; }
+               else     {  BPZ=1; } //разрешенно
                //проверяем позиции отсутствующих передних ячеек
                if  ((KZ1)&&(KX0)) { Bvz=0; }
                else    { Bvz=1; }
@@ -58,10 +58,10 @@ static void vStateForm(void *pvParameters) {
                   }
                else { Bpz=1; }
                //позиция отсека выдачи
-               if ((KY2)&&(KZ0)&&(KX0))  { pOV=1; }
-               else  { pOV=0; }
+               if ((KY2)&&(KZ0)&&(KX0))  { pOV=1; sOV="ov"; }
+               else  { pOV=0; sOV="none"; }
                //позиция операций с дроном
-               if ((KY2)&&(KZ3)&&(KX0))  { pDN=1; }
-               else  { pDN=0; }
+               if ((KY2)&&(KZ3)&&(KX0))  { pDN=1; sDN="dn"; }
+               else  { pDN=0; sDN="none"; }
             }  
 }  
