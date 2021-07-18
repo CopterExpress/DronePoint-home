@@ -1,0 +1,314 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="content-language" content="ru">
+<title>integration drone_point_node</title>
+</head>
+
+<body bgcolor="FFFFFF" text="#000000" link="#BFCF00" vlink="#FF00FF">
+
+
+<TABLE CELLSPACING=0 bordercolor="#FF5500" BORDER=0 CELLPADDING=6 WIDTH=730>
+<TR>
+<TD COLSPAN=5 VALIGN="center" align="right" HEIGHT=120>
+
+
+<h2>Интеграция ноды дронпоинта</h2>
+
+
+</TD>
+</TR>
+</TABLE>
+
+
+
+<TABLE CELLSPACING=0 bordercolor="#FFBF00" BORDER=0 CELLPADDING=6 WIDTH=730>
+<TR>
+<TD COLSPAN=5 VALIGN="center" HEIGHT=100>
+
+
+<pre>
+  Интегрировать ноду дронпоинта будем на образ clover_v0.21.2 качаем отсюда.
+<p><a href="https://github.com/CopterExpress/clover/releases/tag/v0.21.2">clover_v0.21.2.img.zip</a></p>
+  Запись образа делается с помощью программы Etcher качаем и устанавливаем.
+<p><a href="https://www.balena.io/etcher/">Etcher</a></p>
+  После записи образа на флешку, нужно знать, что WIFI адаптер находится в режиме точки доступа нам 
+в процессе работы придется устанавливать пакеты и для этого нужен интернет. Процесс перенастройки
+адаптера в режим клиента описан здесь.
+<p><a href="https://clover.coex.tech/ru/network.html">Настройка Wi-Fi</a></p>
+</pre>
+
+</TD>
+</TR>
+</TABLE>
+
+
+<TABLE CELLSPACING=0 bordercolor="#FFBF00" BORDER=0 CELLPADDING=6 WIDTH=730>
+<TR>
+<TD COLSPAN=5 VALIGN="center" HEIGHT=100>
+
+<pre>
+  Итак, думаю что вы зашли на raspberry используя putty и успешно подключились к вашей WIFI сети.
+Останавливаем ноду клевера.
+<b>sudo systemctl stop clover.service</b>
+И отключаем ее из автозапуска, потом когда надо включим.
+<b>sudo systemctl disable clover.service</b>
+  Далее переместите папку clover в домашний каталог я думаю вы там и находитесь
+<b>sudo mv catkin_ws/src/clover/  ./clover<b>
+</pre>
+
+</TD>
+</TR>
+</TABLE>
+
+
+
+<TABLE CELLSPACING=0 bordercolor="#FFBF00" BORDER=0 CELLPADDING=6 WIDTH=730>
+<TR>
+<TD COLSPAN=5 VALIGN="center" HEIGHT=100>
+
+<pre>
+  Для работы ноды дронпоинта необходима библиотека pyserial ее нет в образе.
+  Устанавливаем
+  <b>sudo apt-get update</b>
+  <b>sudo apt-get install python-pip</b>
+  <b>sudo pip install pyserial</b>
+  Проверьте если все сделано правильно импорт не должен вызывать ошибки.
+  <img src="serial.png" alt="Гружусь">
+  Далее нам придется устанавливать в систему дэбиан пакеты для этого необходимо установить 
+менеджер этих пакетов устанавливаем
+  <b>sudo apt-get install dpkg-repack fakeroot</b>
+</pre>
+
+
+</TD>
+</TR>
+</TABLE>
+
+
+
+
+<TABLE CELLSPACING=0 bordercolor="#FFBF00" BORDER=0 CELLPADDING=6 WIDTH=730>
+<TR>
+<TD COLSPAN=5 VALIGN="center" HEIGHT=100>
+
+<pre>
+  Вообще я предлагаю сразу скачать все что надо для дальнейшей работы. А затем используя
+программу WinSCP скопировать на raspberry в домашний каталог.
+<p><a href="https://winscp.net/eng/download.php">winscp</a></p>
+  Для других операцинных систем существуют аналоги также поддерживающие <b>протокол SSH,SFTP</b> 
+такие, как FileZilla,Cyberduck,Transmit,muCommander,FireFTP,Forklift,trolCommander,
+Royal TSX,mc,sshfs.
+  Скачиваем пакет библиотек libcyaml они необходимы для работы mavlink-fast-switch.
+<a href="libcyaml_20210120-1_armhf.deb" download="">libcyaml_20210120-1_armhf.deb</a>
+  Скачиваем сам mavlink-fast-switch.
+<a href="mavlink-fast-switch_20210121-1_armhf.deb" download="">mavlink-fast-switch_20210121-1_armhf.deb</a>
+  Скачиваем ROS пакеты комплекс автоматики COEX собственно в них нода дронпоинта.
+<a href="srcROS.zip" download="">srcROS.zip</a>
+  Скачиваем конфигурационный файл mavlink-fast-switch
+<a href="charging_station.yaml" download="">charging_station.yaml</a>
+  Скачиваем unit файл mavlink-fast-switch необходим для управления запуском сервиса
+<a href="mavlink-fast-switch.service" download="">mavlink-fast-switch.service</a>
+  Скачиваем unit файл ноды дронпоинта необходим для управления запуском ROS сервиса
+<a href="dronepoint_node.service" download="">dronepoint_node.service</a>
+</pre>
+
+</TD>
+</TR>
+</TABLE>
+
+
+<TABLE CELLSPACING=0 bordercolor="#FFBF00" BORDER=0 CELLPADDING=6 WIDTH=730>
+<TR>
+<TD COLSPAN=5 VALIGN="center" HEIGHT=100>
+
+<pre>
+<p>Копируем файлы в домашний каталог <b>/home/pi/</b></p>
+<img src="SCP0.png" alt="Гружусь">
+<p>Файлы ROS пакетов <b>srcROS.zip</b> надо распаковать и копировать в <b>/home/pi/catkin_ws/src</b></p>
+<img src="SCP1.png" alt="Гружусь">
+</pre>
+
+
+</TD>
+</TR>
+</TABLE>
+
+<TABLE CELLSPACING=0 bordercolor="#FFBF00" BORDER=0 CELLPADDING=6 WIDTH=730>
+<TR>
+<TD COLSPAN=5 VALIGN="center" HEIGHT=100>
+
+<BR>
+<pre>
+  Устанавливаем дэбиан пакет <b>libcyaml</b> 
+  <b>sudo dpkg -i libcyaml_20210120-1_armhf.deb</b>
+  после установки выполняем команды
+  <b>LD_LIBRARY_PATH=/usr/local/lib
+  export LD_LIBRARY_PATH=/usr/local/lib
+  sudo ldconfig</b>
+<img src="libcyaml.png" alt="Гружусь">
+  Команда ldconfig создает необходимые ссылки и кэш (для использования компоновщиком во время
+выполнения, ld.so) с самыми последними общими библиотеками, найденными в каталогах, указанных в 
+командной строки, в файле /etc/ld.so.conf и в доверенных каталогах (/usr/lib и /lib)
+</pre>
+
+
+</TD>
+</TR>
+</TABLE>
+
+<TABLE CELLSPACING=0 bordercolor="#FFBF00" BORDER=0 CELLPADDING=6 WIDTH=730>
+<TR>
+<TD COLSPAN=5 VALIGN="center" HEIGHT=100>
+
+<BR>
+<pre>
+  Устанавливаем дэбиан пакет <b>mavlink-fast-switch</b> 
+  <b>sudo dpkg -i mavlink-fast-switch_20210121-1_armhf.deb</b>
+  После установки пакет создает недопустимое имя для unit файла поэтому удаляем этот файл и копируем
+наш файл из домашнего каталога.
+  <b>
+  sudo rm /lib/systemd/system/mavlink-fast-switch@.service
+  sudo cp ./mavlink-fast-switch.service /lib/systemd/system/mavlink-fast-switch.service</b>
+  Также копируем файл конфигурации в соответствующее место
+  <b>sudo cp ./charging_station.yaml /etc/mavlink-fast-switch/charging_station.yaml</b>
+  <img src="fast0.png" alt="Гружусь">
+  Запускаем mavlink-fast-switch
+  <b>sudo systemctl start mavlink-fast-switch.service</b>  
+  Если все было сделано правильно то команда
+  <b>sudo netstat -tulpn | grep fast</b>
+  покажет на каких портах наш мавлинк роутер ожидает подключения
+  <img src="fast1.png" alt="Гружусь">
+  Включаем автозапуск для mavlink-fast-switch
+  <b>sudo systemctl enable mavlink-fast-switch.service</b>
+</pre>
+
+
+</TD>
+</TR>
+</TABLE>
+
+<TABLE CELLSPACING=0 bordercolor="#FFBF00" BORDER=0 CELLPADDING=6 WIDTH=730>
+<TR>
+<TD COLSPAN=5 VALIGN="center" HEIGHT=100>
+
+<BR>
+<pre>
+  Теперь возвращаемся к ROS пакетам которые скопировали в папку  <b>/home/pi/catkin_ws/src</b>.
+Настало время выполнить catkin сборку, выполняем команды.
+    <b>cd /home/pi/catkin_ws/
+    catkin_make</b>
+  После завершения catkin_make выполняем следующие
+    <b>cd /home/pi/catkin_ws/build/
+    make </b>
+<img src="ros0.png" alt="Гружусь">
+<BR>
+  Питоновские скрипты, необходимых для работы нод, делаем исполняемыми
+<b>
+sudo chmod a+x /home/pi/catkin_ws/src/cs_mavlink/scripts/cs_mavlink/cs_mavlink_node.py
+sudo chmod a+x /home/pi/catkin_ws/src/dronepoint_driver/scripts/dronepoint_driver/dronepoint_driver_node.py
+sudo chmod a+x /home/pi/catkin_ws/src/dronepoint_driver/scripts/dronepoint_driver/dronepoint_scenarios.py
+</b>
+  Копируем unit файл ноды дронпоинта из домашней папки в соответствующее место
+<b>cd /home/pi/
+sudo cp ./dronepoint_node.service /lib/systemd/system/dronepoint_node.service</b>
+  Запускаем ноду дронпоинта
+<b>sudo systemctl start dronepoint_node.service</b>
+  Если все сделано правильно, и микроконтроллер подключен, и с него идут json данные то команда
+<b>sudo systemctl status dronepoint_node.service</b>
+  должна иметь примерно такой вывод
+<img src="ros1.png" alt="Гружусь">
+
+  Включаем автозапуск ноды дронпоинта
+  <b>sudo systemctl enable dronepoint_node.service</b>
+  На этом, установку ноды дронпоинта можно считать выполненной. Можно осуществлять подключения с QGC
+и с питоновских скриптов
+<img src="ros2.png" alt="Гружусь">
+  Скачать QGC для windows
+<a href="QGroundControl-installer.exe" download="">QGroundControl-installer.exe</a>
+  Скачать QGC для MAC OS
+<a href="QGroundControl.dmg" download="">QGroundControl.dmg</a>
+</pre>
+
+
+</TD>
+</TR>
+</TABLE>
+
+
+<TABLE CELLSPACING=0 bordercolor="#FFBF00" BORDER=0 CELLPADDING=6 WIDTH=730>
+<TR>
+<TD COLSPAN=5 VALIGN="center" HEIGHT=100>
+
+<BR>
+<pre>
+  Теперь займемся нодой клевера(набором нод), которая была перемещена в папку <b>/home/pi/</b>
+Проблема совместной работы ноды клевера и ноды дронпоинта заключается в ноде mavros, которая
+входит в состав ноды  клевера. Она слушает  теже порты, что и <b>mavlink-fast-switch</b>, и также она 
+пытается получить доступ к <b>/dev/ttyACM0</b> только теперь у нас там не полетный контроллер px4,
+а дронпоинт. Дронпоинт шлет в <b>/dev/ttyACM0</b> json сообщения, а не mavlink, это вызывает 
+аварийную перезагрузку ноды mavros, она начинает периодически перезагружаться и вместе с ней
+блокируется работа всего сервиса clover.
+  Решаем эту проблему, переходим в домашний каталог 
+  <b>cd /home/pi/</b>
+  Редактируем файл   
+  <b>sudo nano clover/clover/launch/clover.launch</b>
+  выставляем следующие значения у параметров
+  
+  &lt;arg name="fcu_conn" default="uart"/&gt;
+  &lt;arg name="optical_flow" default="false"/&gt;
+  &lt;arg name="rangefinder_vl53l1x" default="false"/&gt;
+  &lt;arg name="led" default="false"/&gt;
+  
+  Также удаляем секцию
+
+  &lt;!-- mavros --&gt;
+    &lt;include file="$(find clover)/launch/mavros.launch"&gt;
+        &lt;arg name="fcu_conn" value="$(arg fcu_conn)"/&gt;
+        &lt;arg name="fcu_ip" value="$(arg fcu_ip)"/&gt;
+        &lt;arg name="fcu_sys_id" value="$(arg fcu_sys_id)"/&gt;
+        &lt;arg name="gcs_bridge" value="$(arg gcs_bridge)"/&gt;
+    &lt;/include&gt;  
+  Выходим из nano с сохранением.<BR>
+  Далее удаляем файлы
+  <b>sudo rm /home/pi/clover/clover/launch/mavros.launch</b>
+  <b>sudo rm /home/pi/clover/clover/launch/mavros_config.yaml</b> 
+  Перемещаем папку clover из <b>/home/pi/</b> обратно в <b>/home/pi/catkin_ws/src/</b>
+  <b>sudo mv ./clover catkin_ws/src/clover/</b><BR>
+  Запускаем ноду клевера
+  <b>sudo systemctl start clover.service</b>
+  Если все сделано правильно то команда
+  <b>sudo systemctl status clover.service</b>
+  будет иметь следующий вывод
+  <img src="clov00.png" alt="Гружусь"><BR>
+  также перейдя по адресу raspberry в браузере появится web страница
+  ну и также станет доступна web камера<BR>
+  <img src="clov01.png" alt="Гружусь"><BR>
+  Включаем автозапуск для ноды клевера
+  <b>sudo systemctl enable clover.service</b><BR> 
+  Зайдя в WEB терминал и введя команду <b>rostopic list</b> получим список всех нод в ROS
+  <img src="clov02.png" alt="Гружусь"><BR>
+  При помощи команды  <b>rostopic echo /dronepoint_driver/state</b>  можно  анализировать работу
+  дронпоинта 
+  <img src="clov03.png" alt="Гружусь"><BR>
+  Теперь ноды дронпоинта и клевера могут работать вместе и не конфликтовать.<BR>
+  Обращаю ваше внимание, что при неподключенном микроконтроллере, или при каких-то неисправностях
+  при которых не поступают json данные на <b>/dev/ttyACM0</b>, подключение через QGC возможно, но
+  стейт будет UNKNOWN, выполнение каких либо команд невозможно.<BR>
+  <img src="clov04.png" alt="Гружусь"><BR>
+  Уже готовый образ можно скачать здесь
+  <p><a href="https://github.com/CopterExpress/ros_cs_images/releases/tag/clover_v0.21.2.DP.img">github.com/CopterExpress/ros_cs_images/releases/tag/clover_v0.21.2.DP.img</a></p>
+
+</pre>
+
+
+</TD>
+</TR>
+</TABLE>
+
+
+
+
+</body>
+</html>

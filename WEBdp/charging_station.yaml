@@ -1,0 +1,35 @@
+endpoints:
+  - name: "charging-station"
+    local:
+      ip: "127.0.0.1"
+      port: 14550
+  - name: "uav"
+    local:
+      ip: "0.0.0.0"
+      port: 14542
+    sleep:
+      interval: 5
+      heartbeat-interval: 2
+#  - name: "broadcast"
+#    remote:
+#      ip: "192.168.11.255"
+#      port: 14610
+  - name: "clients"
+    local:
+      ip: "0.0.0.0"
+      port: 14590
+    sleep:
+      interval: 5
+      heartbeat-interval: 2
+  - name: "clients-filtered"
+#    local:
+#      ip: "192.168.11.1"
+#      port: 14591
+#    filter:
+#      type: "drop"
+#      messages:
+#        - "GPS_RTCM_DATA"
+#        - "HIGHRES_IMU"
+#    sleep:
+#      interval: 5
+#      heartbeat-interval: 2

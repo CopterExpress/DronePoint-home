@@ -1,0 +1,16 @@
+[Unit]
+Description=COEX MAVLink charging station ROS package
+Requires=roscore.service
+After=roscore.service
+
+
+[Service]
+User=pi
+ExecStart=/bin/bash -c ". /home/pi/catkin_ws/devel/setup.sh; \
+                      ROS_HOSTNAME=`hostname`.local exec stdbuf -o L roslaunch  cs_mavlink  cs_mavlink_dronepoint.launch --wait --screen --skip-log-check \
+                      2> >(tee /tmp/dronepoint.err)"
+
+
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,13 @@
+[Unit] 
+Description=COEX fast MAVLink UDP switch 
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+WorkingDirectory=/etc/mavlink-fast-switch
+ExecStart=/usr/local/bin/mavlink-fast-switch -l debug /etc/mavlink-fast-switch/charging_station.yaml
+RestartSec=2s
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
