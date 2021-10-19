@@ -5,7 +5,10 @@ static void Z0Block() //движение к Z0(кстати отсек выда�
         {   StatusZ="ZmoveZ0";
             tempmoveZ="vpered"; //если проедет конечный концевик то следующее движение вперет
             //при сработке KZ0  motorZ(0) и  break;
-            if (KZ0) { motorZ(0); vTaskDelay(200); if (KZ0) { motorZ(0); break; }}
+            if (KZ0) { motorZ(0); vTaskDelay(200); 
+                       if (KZ0) { motorZ(0); Flzkp=0; break; }
+                       else { Flzkp=1; }
+                     }
             if ((KZ1)||(KZ2)||(KZ3)) { Flzkp=0; }
             //при сработке таймера  motorZ(0) и  break;
             if ((millis()-timerZ)>90000) { motorZ(0); break; }

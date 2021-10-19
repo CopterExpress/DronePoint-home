@@ -2,22 +2,27 @@
 static void motorZ(byte direct) 
    { uint16_t shm1,shm2;
      if      (direct==0)    { shm1=0; shm2=0;     } //стоп
-     else if (direct==1)    { shm1=65000; shm2=0; } //вперет 65000
-     else if (direct==2)    { shm1=0; shm2=42500; } //назат 42500
-     if ((StatusZ=="ZmoveZ4")&&(direct==1)) { shm1=45000; shm2=0;  } //крышка
-     if ((StatusZ=="ZmoveZ5")&&(direct==1)) { shm1=45000; shm2=0;  } //контейнер
+     else if (direct==1)    { shm1=65000; shm2=0; } //вперет 46000
+     else if (direct==2)    { shm1=0; shm2=63700; } //назат 20100
+   /*  if ((StatusZ=="ZmoveZ2")&&(direct==1)) { shm1=44500; shm2=0;  } 
+     if ((StatusZ=="ZmoveZ2")&&(direct==2)) { shm1=19800; shm2=0;  }
+     if ((StatusZ=="ZmoveZ3")&&(direct==1)) { shm1=44500; shm2=0;  } 
+     //if ((StatusZ=="ZmoveZ3")&&(direct==2)) { shm1=19800; shm2=0;  }
+     if ((StatusZ=="ZmoveZ4")&&(direct==1)) { shm1=44500; shm2=0;  } //крышка
+     //if ((StatusZ=="ZmoveZ4")&&(direct==2)) { shm1=19800; shm2=0;  }
+     if ((StatusZ=="ZmoveZ5")&&(direct==1)) { shm1=44500; shm2=0;  } //контейнер*/
      pwmWrite(zpwm1,shm1);
      pwmWrite(zpwm2,shm2);
    }    
 
 //мотор ось Y 
 static void motorY(byte direct) 
-   { boolean shm1,shm2;
-     if      (direct==0)   { shm1=0; shm2=0; } //стоп
-     else if (direct==1)   { shm1=1; shm2=0; } //вперет к Y3pered
-     else if (direct==2)   { shm1=0; shm2=1; } //назат к Y1zad
-     digitalWrite(ypwm1, shm1);
-     digitalWrite(ypwm2, shm2);
+   { uint16_t shm1,shm2;
+     if      (direct==0)    { shm1=0; shm2=0;     } //стоп
+     else if (direct==1)    { shm1=36000; shm2=0; } //вперет к Y3pered
+     else if (direct==2)    { shm1=0; shm2=36000; } //назат к Y1zad
+     pwmWrite(ypwm1,shm1);
+     pwmWrite(ypwm2,shm2);
    } 
 
 //мотор гусеницы 
@@ -80,8 +85,8 @@ static void motorSlY(byte direct)
      sprintf(sMslYout, "SlYout: MstolY=%s" , (const char *)MstolY.c_str());*/
      uint16_t shm1,shm2;
      if      (direct==0)    { shm1=0; shm2=0; }
-     else if (direct==1)    { shm1=60000; shm2=0; } //вперет
-     else if (direct==2)    { shm1=0; shm2=60000; } //назат
+     else if (direct==1)    { shm1=65000; shm2=0; } //вперет
+     else if (direct==2)    { shm1=0; shm2=65000; } //назат
      pwmWrite(zypwm1,shm1);
      pwmWrite(zypwm2,shm2);
    }

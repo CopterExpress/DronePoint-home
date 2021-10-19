@@ -23,11 +23,11 @@ static void vKZcheckTask(void *pvParameters) {
 //проверка состояния концевиков Y паралленый таск
 static void vKYcheckTask(void *pvParameters) {
    vTaskDelay(330);
-   for (;;) {  if      (digitalRead(pKY1)==HIGH)  { KY1=0;  }
+   for (;;) {  if      (digitalRead(pKY1)==HIGH)  { KY1=0;   }
                else if (digitalRead(pKY1)==LOW)   { KY1=1; YUN=0; }
-               if      (digitalRead(pKY2)==HIGH)  { KY2=0;  }
+               if      (digitalRead(pKY2)==HIGH)  { KY2=0;   }
                else if (digitalRead(pKY2)==LOW)   { KY2=1; YUN=0; }
-               if      (digitalRead(pKY3)==HIGH)  { KY3=0;  }
+               if      (digitalRead(pKY3)==HIGH)  { KY3=0;   }
                else if (digitalRead(pKY3)==LOW)   { KY3=1; YUN=0; }
                if      (digitalRead(Kcnt1)==HIGH) { cnt1=0;  }
                else if (digitalRead(Kcnt1)==LOW)  { cnt1=1;  }

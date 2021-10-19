@@ -146,6 +146,7 @@ static void vJsonParsingTask(void *pvParameters) {
                      else if (command=="inPacts")    { AcTest="inPacts";  }  // {"command":"inPacts"}  тест приема
                      else if (command=="outPacts")   { AcTest="outPacts"; }  // {"command":"outPacts"} тест получения
                      else if (command=="compTest")   { AcTest="compTest"; }  // {"command":"compTest"} комплексный тест
+                     else if (command=="SLtest")     { AcTest="SLtest";   }  // {"command":"SLtest"} тест посадочного стола
                      else if (command=="NKcon")      { AcTest="NKcon";    }  // {"command":"NKcon"}
                      else if (command=="levcon")     { AcTest="levcon";   }  // {"command":"levcon"}
                      else if (command=="Xtest")      { AcTest="Xtest";    }  // {"command":"Xtest"}
@@ -214,7 +215,7 @@ static void vSendTask(void *pvParameters) {
                           if (Pchan=="compl")  { Pchan="none";  }
                           nSen+=1;
                         }
-            /*      else if (nSen==5)
+                     else if (nSen==3)
                         { //vTaskDelay(130);
                           //debugout4021();
                           //vTaskDelay(130);
@@ -222,53 +223,63 @@ static void vSendTask(void *pvParameters) {
                           //dlMeter();
                           //debugoutDIR();
                           nSen+=1; 
-                        }                     */
+                        }                     
                      
-                  
+                     //if (nSen<3)   
                      root1.printTo(Serial);
-                     Serial.print('\n'); 
+                     Serial.print('\n');
+                       
                                           
                      vTaskDelay(750);
-                     if (nSen>2) { nSen=0; }
+                     if (nSen>3) { nSen=0; }
              }
 }
 
 //дебаг формируем строки вывода концевиков 
 static void debugoutKONS() 
       {  char skzout[65];
-         char skxout[40];
-         char skyout[30];
+         //char skxout[40];
+         char skyout[44];
          char skstol[35];
-         char skntout[35];
+         //char skntout[35];
          char sVlout[40];
-         char sPlout[35];
+         //char sPlout[35];
          char sOVout[35];
-         char sdata2[65];
-         //char vdKr3[35];
+         char sdata2[40];
+         char sZ0[30];
+         char sZ1[30];
+         char sZ2[30];
+         char sZ3[30];
                  
-         //sprintf(skzout, "KZout: KZ0=%i KZ1=%i KZ2=%i KZ3=%i KZ4=%i KZ5=%i KZ6=%i KZ7=%i KZ8=%i" , KZ0,KZ1,KZ2,KZ3,KZ4,KZ5,KZ6,KZ7,KZ8);
+         //sprintf(skzout, "KZout: KZ0=%i KZ1=%i KZ2=%i KZ3=%i KZ4=%i KZ5=%i KX0=%i" , KZ0,KZ1,KZ2,KZ3,KZ4,KZ5,KX0);
          //Serial.println(skzout);
+
+         sprintf(sZ0, "Z0level: Z0Y3=%i Z0Y1=%i", Z0Y3,Z0Y1);
+         Serial.println(sZ0);
+         sprintf(sZ1, "Z1level: Z1Y1=%i", Z1Y1);
+         Serial.println(sZ1);
+         sprintf(sZ2, "Z0level: Z2Y3=%i Z2Y1=%i", Z2Y3,Z2Y1);
+         Serial.println(sZ2);
+         sprintf(sZ3, "Z0level: Z3Y3=%i Z3Y1=%i", Z3Y3,Z3Y1);
+         Serial.println(sZ3);
+        
+         sprintf(skyout, "KYout: KY1=%i KY2=%i KY3=%i cnt1=%i cnt2=%i" , KY1,KY2,KY3,cnt1,cnt2);
+         Serial.println(skyout);
          //vTaskDelay(130);
-         //sprintf(skxout, "KXout: KX0=%i KX1=%i KX2=%i KX3=%i KX4=%i" , KX0,KX1,KX2,KX3,KX4);
-         //Serial.println(skxout);
-         //vTaskDelay(130);
-         //sprintf(skyout, "KYout: KY1=%i KY2=%i KY3=%i" , KY1,KY2,KY3);
-         //Serial.println(skyout);
-         //vTaskDelay(130);
-         // sprintf(skstol, "KStol: KXun=%i KYun=%i KXce=%i KYce=%i" , KXun,KYun,KXce,KYce);
-         // Serial.println(skstol);
+         sprintf(skstol, "KStol: KXun=%i KYun=%i KXce=%i KYce=%i" , KXun,KYun,KXce,KYce);
+         Serial.println(skstol);
          // vTaskDelay(130);
 
          //sprintf(sPlout, "Plout: plA=%i plB=%i" , plA,plB);
          //Serial.println(sPlout);
          //vTaskDelay(130);
 
-         //sprintf(sOVout, "OVout: ovv=%i ovn=%i" , ovv,ovn);
-         //Serial.println(sOVout);
+         sprintf(sOVout, "OVout: ovv=%i ovn=%i" , ovv,ovn);
+         Serial.println(sOVout);
          //vTaskDelay(130);
 
-         //sprintf(sdata2, "data2: KR3n=%i KR3c=%i KR3o=%i KR6n=%i KR6c=%i KR6o=%i" , KR3n,KR3c,KR3o,KR6n,KR6c,KR6o);
-         //Serial.println(sdata2);
+         sprintf(sdata2, "KRysh: KR0n=%i KR0c=%i KR0o=%i" , KR0n,KR0c,KR0o);
+         Serial.println(sdata2);
          //vTaskDelay(130);
 
 
@@ -282,8 +293,8 @@ static void debugoutKONS()
          //Serial.println(skntout);
          //vTaskDelay(130);
          
-         //sprintf(sVlout, "Vlout: Vlv=%i Vln=%i Vld=%i Vlz=%i" , Vlv,Vln,Vld,Vlz);
-         //Serial.println(sVlout);
+         sprintf(sVlout, "Vlout: Vlv=%i Vln=%i Vld=%i Vlz=%i" , Vlv,Vln,Vld,Vlz);
+         Serial.println(sVlout);
          //vTaskDelay(130); 
 
          Serial.print('\n'); 

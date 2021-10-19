@@ -24,7 +24,7 @@ static void vygruzkaKP()
           boolean vyA=0; 
           //параметры спуска и подъема оси Z зависят от уровня
           //операция допускается только на этих уровнях т.е. vyA=1
-          if      (meZ=="Z0")   { Zdw=-270; Zup=260; vyA=1; } 
+          if      (meZ=="Z0")   { Zdw=-280; Zup=420; vyA=1; } 
           else if (meZ=="Z1")   { Zdw=-300; Zup=240; vyA=1; } //отсек выдачи
           else if (meZ=="Z2")   { Zdw=-290; Zup=314; vyA=1; }
           else if (meZ=="Z3")   { Zdw=-280; Zup=344; vyA=1; } 
@@ -47,7 +47,7 @@ static void vygruzkaKP()
                           //при сработке cnt2  gusmotor(0) и  break;
                           if (cnt2) { gusmotor(0); vTaskDelay(200); if (cnt2) { gusmotor(0); break; }}
                           //при сработке таймера  gusmotor(0) и  break;
-                          if ((millis()-gustrack)>9000) { gusmotor(0); break; }
+                          if ((millis()-gustrack)>10100) { gusmotor(0); break; }
                        }  
                  //задвигаем Y на Y2center
                  Y2Block();
@@ -71,7 +71,7 @@ static void zagruzkaKP()
           boolean vaA=0;
           //параметры спуска и подъема оси Z зависят от уровня
           //операция допускается только на этих уровнях т.е. vaA=1
-          if      (meZ=="Z0")   { Zup=90;  Zdw=-480; vaA=1;  } 
+          if      (meZ=="Z0")   { Zup=185; Zdw=-400; vaA=1;  } 
           else if (meZ=="Z1")   { Zup=80;  Zdw=-620; vaA=1;  }
           else if (meZ=="Z2")   { Zup=110; Zdw=-620; vaA=1;  }
           else if (meZ=="Z3")   { Zup=100; Zdw=-655; vaA=1;  } 
@@ -94,7 +94,7 @@ static void zagruzkaKP()
                           else if ((meZ=="Z2")&&(Z2Y3)) { gusmotor(0); vTaskDelay(200); if (Z2Y3) { gusmotor(0); break; }}
                           else if ((meZ=="Z3")&&(Z3Y3)) { gusmotor(0); vTaskDelay(200); if (Z3Y3) { gusmotor(0); break; }}
                           //при сработке таймера  gusmotor(0) и  break;
-                          if ((millis()-gustrack)>5600) { gusmotor(0); break; }
+                          if ((millis()-gustrack)>7200) { gusmotor(0); break; }
                           gusmotor(2);
                        } 
                   //контейнер загружен    
@@ -124,7 +124,7 @@ static void vygruzkaKZ()
           boolean vyA=0; 
           //параметры спуска и подъема оси Z зависят от уровня
           //операция допускается только на этих уровнях т.е. vyA=1
-          if      (meZ=="Z0")   { Zdw=-270; Zup=260; vyA=1; } //отсек выдачи
+          if      (meZ=="Z0")   { Zdw=-370; Zup=260; vyA=1; } //отсек выдачи
           else if (meZ=="Z1")   { Zdw=-300; Zup=240; vyA=1; } 
           else if (meZ=="Z2")   { Zdw=-290; Zup=314; vyA=1; }
           else if (meZ=="Z3")   { Zdw=-280; Zup=344; vyA=1; } 
@@ -170,7 +170,7 @@ static void zagruzkaKZ()
           boolean vaA=0;
           //параметры спуска и подъема оси Z зависят от уровня
           //операция допускается только на этих уровнях т.е. vaA=1
-          if      (meZ=="Z0")   { Zup=90;  Zdw=-480; vaA=1;  } 
+          if      (meZ=="Z0")   { Zup=100; Zdw=-180; vaA=1;  } 
           else if (meZ=="Z1")   { Zup=80;  Zdw=-620; vaA=1;  }
           else if (meZ=="Z2")   { Zup=110; Zdw=-620; vaA=1;  }
           else if (meZ=="Z3")   { Zup=100; Zdw=-655; vaA=1;  } 
@@ -193,7 +193,7 @@ static void zagruzkaKZ()
                           else if ((meZ=="Z2")&&(Z2Y1)) { gusmotor(0); vTaskDelay(200); if (Z2Y1) { gusmotor(0); break; }}
                           else if ((meZ=="Z3")&&(Z3Y1)) { gusmotor(0); vTaskDelay(200); if (Z3Y1) { gusmotor(0); break; }}
                           //при сработке таймера  gusmotor(0) и  break;
-                          if ((millis()-gustrack)>5600) { gusmotor(0); break; }
+                          if ((millis()-gustrack)>6200) { gusmotor(0); break; }
                           gusmotor(1);
                        } 
                   //контейнер загружен    
@@ -245,7 +245,7 @@ static void vlps(boolean direct)
                   {  //при сработке Vlv vlpmotor(0) и  break;
                      if (Vlv) { vlpmotor(0); vTaskDelay(200); if (Vlv) { vlpmotor(0); break; }}
                      //при сработке таймера  vlpmotor(0) и  break;
-                     if ((millis()-vltrack)>15000) { vlpmotor(0); break; }
+                     if ((millis()-vltrack)>26000) { vlpmotor(0); break; }
                      vlpmotor(1);
                   } 
              }
@@ -255,7 +255,7 @@ static void vlps(boolean direct)
                   {  //при сработке Vln vlpmotor(0) и  break;
                      if (Vln) { vlpmotor(0); vTaskDelay(200); if (Vln) { vlpmotor(0); break; }}
                      //при сработке таймера  vlpmotor(0) и  break;
-                     if ((millis()-vltrack)>15000) { vlpmotor(0); break; }
+                     if ((millis()-vltrack)>26000) { vlpmotor(0); break; }
                      vlpmotor(2);
                   } 
              }
@@ -271,7 +271,7 @@ static void vlvz(boolean direct)
                   {  //при сработке Vld vlzmotor(0) и  break;
                      if (Vld) { vlzmotor(0); vTaskDelay(200); if (Vld) { vlzmotor(0); break; }}
                      //при сработке таймера  vlzmotor(0) и  break;
-                     if ((millis()-vltrack)>24000) { vlzmotor(0); break; }
+                     if ((millis()-vltrack)>30000) { vlzmotor(0); break; }
                      vlzmotor(1);
                   }
              }
@@ -281,7 +281,7 @@ static void vlvz(boolean direct)
                   {  //при сработке Vlz vlzmotor(0) и  break;
                      if (Vlz) { vlzmotor(0); vTaskDelay(200); if (Vlz) { vlzmotor(0); break; }}
                      //при сработке таймера  vlzmotor(0) и  break;
-                     if ((millis()-vltrack)>24000) { vlzmotor(0); break; }
+                     if ((millis()-vltrack)>30000) { vlzmotor(0); break; }
                      vlzmotor(2);
                   }  
              }
@@ -316,7 +316,15 @@ static void ovopcl(boolean direct)
          if ((direct)&&(!ovv)) //открыть 
              { OprSt="bottom hatch opening.. .";
                ovsolenoid(1);
+               vTaskDelay(1200);
+               ovsolenoid(0);
                vTaskDelay(1000);
+               ovsolenoid(1);
+               vTaskDelay(1200);
+               ovsolenoid(0);
+               vTaskDelay(1000);
+               ovsolenoid(1);
+               vTaskDelay(1900);
                ovtrack=millis(); 
                for(;;)
                   {  //при сработке ovv ovmotor(0) и  break;
@@ -327,12 +335,21 @@ static void ovopcl(boolean direct)
                   }
                vTaskDelay(1000);
                ovsolenoid(0);
+               vTaskDelay(1000);
                OprSt="bottom hatch open OK";
              }
          else if ((!direct)&&(!ovn)) //закрыть
              { OprSt="bottom hatch closing.. .";
                ovsolenoid(1);
+               vTaskDelay(1200);
+               ovsolenoid(0);
                vTaskDelay(1000);
+               ovsolenoid(1);
+               vTaskDelay(1200);
+               ovsolenoid(0);
+               vTaskDelay(1000);
+               ovsolenoid(1);
+               vTaskDelay(1900);
                ovtrack=millis();
                for(;;)
                   {  //при сработке ovn ovmotor(0) и  break;
@@ -343,6 +360,7 @@ static void ovopcl(boolean direct)
                   }
                vTaskDelay(1000);
                ovsolenoid(0);
+               vTaskDelay(1000);
                OprSt="bottom hatch close OK";  
              }
       }
