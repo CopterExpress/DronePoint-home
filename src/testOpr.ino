@@ -106,20 +106,14 @@ static void ZKtest()
 
 //тест PLtest
 static void PLtest()  
-   { uint8_t i=0; 
-     for  (i; i<20; i++) 
-      { //X2Block();
+   { //{"command":"PLtest"}
+     uint8_t i=0; 
+     for  (i; i<10; i++) 
+      { vTaskDelay(1000);
+        ovopcl(1);  //открыть люк отсек выдачи
         vTaskDelay(1000);
-        //ABlock();
-        vTaskDelay(2000);
-        //X4Block();
-        vTaskDelay(1000);
-        //X2Block();
-        vTaskDelay(1000);
-        //BBlock();
-        vTaskDelay(2000);
-        //X4Block();
-        vTaskDelay(1000); }
+        ovopcl(0);  //закрыть люк отсек выдачи
+      }
    }
 
 //тест соленоида
@@ -209,24 +203,88 @@ static void tesCont()
 
 //сценарий testo1
 static void testo1() 
-        { uint8_t i=0; 
-          for  (i; i<1; i++)  
-               { //ovopcl(1);  //открыть
-                 //vTaskDelay(3000);
-                 //ovopcl(0);  //закрыть
-                 //vTaskDelay(3000);
-
-                 posKR0();
+        { //{"command":"testo1"}
+          uint8_t i=0; 
+          for  (i; i<10; i++)  
+               { posKR0();
                  vTaskDelay(1000);
                  CoverInst(); //устанавливаем крышку
                  vTaskDelay(1000);
+                
+                 cmbZ3X0();
+                 vTaskDelay(1000);
+                 zagruzkaKP(); //загрузка перед
+                 vTaskDelay(1000);
+                 vygruzkaKP(); //выгрузка перед
+                 vTaskDelay(1000);
+
                  cmbZ2X0();
                  vTaskDelay(1000);
                  zagruzkaKP(); //загрузка перед
                  vTaskDelay(1000);
+                 vygruzkaKP(); //выгрузка перед
+                 vTaskDelay(1000); 
+
+                 cmbZ0X0(); //отсек выдачи
+                 vTaskDelay(1000);
+                 zagruzkaKP(); //загрузка перед
+                 vTaskDelay(1000);
+                 //vygruzkaKP(); //выгрузка перед
+                 //vTaskDelay(1000);
+
+                 ovopcl(1);  //открыть люк отсек выдачи
+                 vTaskDelay(6000);
+                 ovopcl(0);  //закрыть люк отсек выдачи
+                 vTaskDelay(3000);
+                 vygruzkaKP(); //выгрузка перед
+                 vTaskDelay(1000);
+
+                 posKR0();
+                 vTaskDelay(1000);
+                 CoverUninst(); //снимаем крышку
+                 vTaskDelay(1000);
                  cmbZ0X0();
                  vTaskDelay(1000);
+               }
+        }
+
+
+//тест testo2
+static void testo2()  
+   {  uint8_t i=0; 
+           for  (i; i<10; i++)  
+               { //открываем верхний люк снимаем контейнер
+                 openVL();
+                 vTaskDelay(1000);
+                 posDN();
+                 vTaskDelay(1000);
+                 contenerDN();
+                 vTaskDelay(1000);
+                 closeVL();  //закрываем верхний люк
+                 vTaskDelay(1000);
                  cmbZ2X0();
+                 vTaskDelay(1000);
+
+                 //закрываем верхний люк устанавливаем крышку
+                 closeVL();
+                 vTaskDelay(1000);
+                 posKR0();
+                 vTaskDelay(1000);
+                 CoverInst(); //устанавливаем крышку
+                 vTaskDelay(1000);
+
+                 //переход на Z3 погрузка выгрузка
+                 cmbZ3X0();
+                 vTaskDelay(1000);
+                 zagruzkaKP(); //загрузка перед
+                 vTaskDelay(1000);
+                 vygruzkaKP(); //выгрузка перед
+                 vTaskDelay(1000);
+
+                 //переход на Z2 погрузка выгрузка
+                 cmbZ2X0();
+                 vTaskDelay(1000);
+                 zagruzkaKP(); //загрузка перед
                  vTaskDelay(1000);
                  vygruzkaKP(); //выгрузка перед
                  vTaskDelay(1000);
@@ -243,69 +301,15 @@ static void testo1()
                  posKR0();
                  vTaskDelay(1000);
                  CoverUninst(); //снимаем крышку
-                 cmbZ0X0(); //к отсеку выдачи
+                 vTaskDelay(1000);
+                 cmbZ2X0();
 
-               
-               /*vygruzkaKP();
-                 vTaskDelay(1000);
-                 posOV();
-                 zagruzkaKP();
-                 vTaskDelay(1000);
-                 ovopcl(1);
-                 vTaskDelay(10000);
-                 ovopcl(0);
-                 vTaskDelay(1000);
-                 vygruzkaKP();
-                 vTaskDelay(1000);
-                 posKR3();
-                 vTaskDelay(1000);
-                 CoverUninst();
-                 vTaskDelay(1000);
-                 posDN();
-                 contenerUP();
-                 vTaskDelay(1000);
-                 closeVL();
-                 vTaskDelay(1000);  */
+
+                 
+
+
                }
-        }
-
-//тест testo2
-static void testo2()  
-   {  uint8_t i=0; 
-       /*   for  (i; i<10; i++)  
-               { ovopcl(1);  //открыть
-                 vTaskDelay(3000);
-                 ovopcl(0);  //закрыть
-                 vTaskDelay(3000);
-               }*/
-
-          for  (i; i<10; i++)  
-               { cmbZ0X0();
-                 zagruzkaKP(); //загрузка перед
-                 vTaskDelay(3000);
-                 vygruzkaKP(); //выгрузка перед
-                 vTaskDelay(3000);
-               }
-        
-        /* openVL();
-         vTaskDelay(1000);
-         contenerDN();
-         vTaskDelay(1000);
-         cmbZ6X0();
-         vTaskDelay(1000);
-         cmbZ6X2();
-         vTaskDelay(1000);
-         contenerUP();
-         vTaskDelay(2000);
-         contenerDN();
-         vTaskDelay(1000);
-         cmbZ6X4();
-         vTaskDelay(1000);
-         cmbZ6X2();
-         vTaskDelay(1000);
-         contenerUP();
-         vTaskDelay(1000);  */
-      }
+   }
 
 
 //мониторинг активного состояния AcTest и запуск функций   
@@ -350,12 +354,14 @@ static void vBTcheckTask(void *pvParameters) {
                if  (digitalRead(pBT2)==LOW)  
                       { //motKR0(1); vTaskDelay(44); motKR0(0); //открыть
                         motorY(1); vTaskDelay(44); motorY(0);  //вперет к Y3pered
+                        //servLockCon(0); //открыть замок контейнера
                         Serial.println("BT2");
                       }
                       
                if  (digitalRead(pBT3)==LOW)
                       { //motKR0(2); vTaskDelay(44); motKR0(0);   //закрыть
                         motorY(2); vTaskDelay(44); motorY(0); //назат
+                        //servLockCon(1); //закрыть замок контейнера
                         Serial.println("BT3");
                       }
 
@@ -364,11 +370,12 @@ static void vBTcheckTask(void *pvParameters) {
                         //openVL();
                         //centr();
                         //ovmotor(1); vTaskDelay(44); ovmotor(0); //открыть
-                        gusmotor(1); vTaskDelay(44); gusmotor(0); //выгрузка
+                        //gusmotor(1); vTaskDelay(44); gusmotor(0); //выгрузка
+                        //motorSlY(1); vTaskDelay(44); motorSlY(0); //вперед
                         //vlpmotor(1); vTaskDelay(44); vlpmotor(0); //подъем
                         //vlzmotor(1); vTaskDelay(44); vlzmotor(0); //выдвинуть
                         //motKR0(1); vTaskDelay(44); motKR0(0);   //открыть
-                        //servLockCon(0); //открыть замок контейнера
+                        servLockCon(0); //открыть замок контейнера
                         Serial.println("BT4");
                       }
                if  (digitalRead(pBT5)==LOW)  
@@ -376,11 +383,13 @@ static void vBTcheckTask(void *pvParameters) {
                         //closeVL();
                         //uncentr();
                         //ovmotor(2); vTaskDelay(44); ovmotor(0); //закрыть
-                        gusmotor(2); vTaskDelay(44); gusmotor(0); //загрузка
+                        //gusmotor(2); vTaskDelay(44); gusmotor(0); //загрузка
+                        //tg=!tg; ovsolenoid(tg); vTaskDelay(320); //соленоид
+                        //motorSlY(2); vTaskDelay(44); motorSlY(0); //назад
                         //vlpmotor(2); vTaskDelay(44); vlpmotor(0); //спуск
                         //vlzmotor(2); vTaskDelay(44); vlzmotor(0); //задвинуть
                         //motKR0(2); vTaskDelay(44); motKR0(0);   //закрыть
-                        //servLockCon(1); //закрыть замок контейнера
+                        servLockCon(1); //закрыть замок контейнера
                         //VLtest();
                         Serial.println("BT5");
                       }
@@ -390,15 +399,21 @@ static void vBTcheckTask(void *pvParameters) {
                         //vlzmotor(1); vTaskDelay(44); vlzmotor(0); //выдвинуть
                         //vlpmotor(1); vTaskDelay(44); vlpmotor(0); //подъем
                         //motorSlX(1); vTaskDelay(44); motorSlX(0); //вперет
-                        lockKR0(0); //закрываем замок
+                        //servLockCon(0); //открыть замок контейнера
+                        zagruzkaKP(); //загрузка перед
+                        //lockKR0(0); //закрываем замок
                         //motorSlY(1); vTaskDelay(44); motorSlY(0); //вперет
                         Serial.println("BT6");
                       } 
 
                if  (digitalRead(pBT7)==LOW)  
                       { //vlpmotor(2); vTaskDelay(44); vlpmotor(0); //спуск
+                        //ovmotor(1); vTaskDelay(44); ovmotor(0); //открыть
                         //motorSlX(2); vTaskDelay(44); motorSlX(0); //назат
-                        lockKR0(1); //открываем замок
+                        //tesCont();
+                        //servLockCon(1); //закрыть замок контейнера
+                        vygruzkaKP(); //выгрузка перед
+                        //lockKR0(1); //открываем замок
                         //vlzmotor(2); vTaskDelay(44); vlzmotor(0); //задвинуть
                         //motorSlY(2); vTaskDelay(44); motorSlY(0); //назат
                         Serial.println("BT7");
@@ -409,7 +424,8 @@ static void vBTcheckTask(void *pvParameters) {
                         //motorSlY(1); vTaskDelay(44); motorSlY(0); //вперет
                         //servLockCon(0); //открыть замок контейнера
                         //motKR0(1); vTaskDelay(44); motKR0(0);   //открыть
-                        zagruzkaKP(); //загрузка перед
+                        //zagruzkaKP(); //загрузка перед
+                        centr();
                         //vlpmotor(1); vTaskDelay(44); vlpmotor(0); //подъем
                         //ovopcl(1); //открыть
                         Serial.println("BT8");
@@ -419,7 +435,8 @@ static void vBTcheckTask(void *pvParameters) {
                         //motorSlY(2); vTaskDelay(44); motorSlY(0); //назат
                         //servLockCon(1); //закрыть замок контейнера
                         //motKR0(2); vTaskDelay(44); motKR0(0);   //закрыть
-                        vygruzkaKP(); //выгрузка перед
+                        //vygruzkaKP(); //выгрузка перед
+                        uncentr();
                         //vlpmotor(2); vTaskDelay(44); vlpmotor(0); //спуск
                         //ovopcl(0); //закрыть
                         Serial.println("BT9");

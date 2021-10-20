@@ -154,8 +154,8 @@ String StatusX="unknown";
 #define pKY3 88 // PF8
 boolean YUN;
 //назначаем пины концевиков детект контейнера
-#define Kcnt1 49 // PD1
-#define Kcnt2 48 // PD0
+#define Kcnt1 55 // PD7 к Y3 перед
+#define Kcnt2 54 // PD6 к Y1 зад
 boolean cnt1=0;
 boolean cnt2=0;
 //шимы мотора Y
@@ -197,8 +197,8 @@ String StatusKkr="unknown";
 boolean Flzkp=0;
 
 //инициализируем энкодер
-#define AenZ 55 // пинA PD7
-#define BenZ 54 // пинB PD6
+#define AenZ 49 // пинA PD1  
+#define BenZ 48 // пинB PD0
 volatile long enzPos=0;
 long enZ0=0,enZ1=819,enZ2=1570,enZ3=2360,enZ4=3169,enZ5=3990;
 
@@ -235,8 +235,8 @@ unsigned long timertrack;
 //############### инициализируем сервоприводы #################
 Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver(0x40); // Установка адреса I2C 0x40
 // от 544мкс до 2400мкс.
-#define SERVOMIN  100     // Минимальная длительность импульса для сервопривода 150
-#define SERVOMAX  450     // Максимальная длина импульса для сервопривода 600
+#define SERVOMIN  70      // Минимальная длительность импульса для сервопривода 150
+#define SERVOMAX  270     // Максимальная длина импульса для сервопривода 600
 //#define SERVO_1 4       // Номер порта (0 - 15)
 //#define SERVO_2 5       // Номер порта (0 - 15)
 #define conLock 0         // Серва замок коптера
@@ -494,7 +494,7 @@ void setup()
   delay(300);
   pwm.begin();  // Инициализация
   delay(300);
-  pwm.setPWMFreq(56); // Частота следования импульсов 60 Гц
+  pwm.setPWMFreq(62); // Частота следования импульсов 60 Гц
   delay(120);
   pwm.setPWM(conLock, 0, SERVOMIN);
 

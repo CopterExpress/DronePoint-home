@@ -24,10 +24,10 @@ static void vygruzkaKP()
           boolean vyA=0; 
           //параметры спуска и подъема оси Z зависят от уровня
           //операция допускается только на этих уровнях т.е. vyA=1
-          if      (meZ=="Z0")   { Zdw=-280; Zup=420; vyA=1; } 
-          else if (meZ=="Z1")   { Zdw=-300; Zup=240; vyA=1; } //отсек выдачи
-          else if (meZ=="Z2")   { Zdw=-290; Zup=314; vyA=1; }
-          else if (meZ=="Z3")   { Zdw=-280; Zup=344; vyA=1; } 
+          if      (meZ=="Z0")   { Zdw=-250; Zup=420; vyA=1; } //отсек выдачи Y3
+          else if (meZ=="Z1")   { Zdw=-300; Zup=420; vyA=1; } //нет ячейки
+          else if (meZ=="Z2")   { Zdw=-250; Zup=422; vyA=1; }
+          else if (meZ=="Z3")   { Zdw=-250; Zup=410; vyA=1; } 
           if ((KZ0)&&(KX0)) { ovopcl(0); } //операция возможна при закрытом люке выдачи
           //операция допускается
           if  ((vyA)&&(XUN==0)&&(VD)&&(Bvz))
@@ -71,10 +71,10 @@ static void zagruzkaKP()
           boolean vaA=0;
           //параметры спуска и подъема оси Z зависят от уровня
           //операция допускается только на этих уровнях т.е. vaA=1
-          if      (meZ=="Z0")   { Zup=185; Zdw=-400; vaA=1;  } 
-          else if (meZ=="Z1")   { Zup=80;  Zdw=-620; vaA=1;  }
-          else if (meZ=="Z2")   { Zup=110; Zdw=-620; vaA=1;  }
-          else if (meZ=="Z3")   { Zup=100; Zdw=-655; vaA=1;  } 
+          if      (meZ=="Z0")   { Zup=185; Zdw=-415; vaA=1;  } //отсек выдачи Y3
+          else if (meZ=="Z1")   { Zup=185; Zdw=-415; vaA=1;  } //нет ячейки
+          else if (meZ=="Z2")   { Zup=200; Zdw=-420; vaA=1;  }
+          else if (meZ=="Z3")   { Zup=185; Zdw=-380; vaA=1;  } 
           if ((KZ0)&&(KX0)) { ovopcl(0); } //операция возможна при закрытом люке выдачи
           //операция допускается 
           if  ((vaA)&&(XUN==0)&&(VD)&&(Bvz)&&(BPP))

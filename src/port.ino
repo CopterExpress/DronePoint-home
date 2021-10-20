@@ -62,7 +62,7 @@ static void vJsonParsingTask(void *pvParameters) {
                          } 
                      
                      //не блокирующие комманды перемещения ось Z (не рекомендуется) 
-                     else if (command=="Z0")  { AcZ=0; } //{"command":"Z0"}
+                     if      (command=="Z0")  { AcZ=0; } //{"command":"Z0"}
                      else if (command=="Z1")  { AcZ=1; } //{"command":"Z1"}
                      else if (command=="Z2")  { AcZ=2; } //{"command":"Z2"}
                      else if (command=="Z3")  { AcZ=3; } //{"command":"Z3"}
