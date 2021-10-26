@@ -155,20 +155,27 @@ static void micdelay(int md)
       }
 
 static void Zjump(int direct)    
-  {  
+  {  long pzStr;
+     pzStr=enzPos;
+     //meZ=StatusZ; глобальная
+
      if (direct>0)  {  vTaskDelay(200);
                        direct=abs(direct);
-                       motorZ(1);
+                       motorZ(1); //вверх
                        vTaskDelay(direct);
                        motorZ(0);
                        vTaskDelay(200);
+                       if (pzStr<enzPos)
+                          { Serial.println("___UP__OK___"); }
                     }
      else if (direct<0) { vTaskDelay(200);
                           direct=abs(direct);
-                          motorZ(2);
+                          motorZ(2); //вниз
                           vTaskDelay(direct);
                           motorZ(0);
                           vTaskDelay(200);
+                          if (pzStr>enzPos)
+                             { Serial.println("___DW__OK___"); }
                         }
   }
 

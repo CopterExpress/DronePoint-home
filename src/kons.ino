@@ -2,17 +2,17 @@
 static void vKZcheckTask(void *pvParameters) {
    vTaskDelay(300);   
    for (;;) {  if      (digitalRead(pKZ0)==HIGH)  { KZ0=0;  }
-               else if (digitalRead(pKZ0)==LOW)   { KZ0=1; ZUN=0; }
+               else if (digitalRead(pKZ0)==LOW)   { KZ0=1; ZUN=0; enzPos=enZ0; }
                if      (digitalRead(pKZ1)==HIGH)  { KZ1=0;  }
-               else if (digitalRead(pKZ1)==LOW)   { KZ1=1; ZUN=0; }
+               else if (digitalRead(pKZ1)==LOW)   { KZ1=1; ZUN=0; enzPos=enZ1; }
                if      (digitalRead(pKZ2)==HIGH)  { KZ2=0;  }
-               else if (digitalRead(pKZ2)==LOW)   { KZ2=1; ZUN=0; }
+               else if (digitalRead(pKZ2)==LOW)   { KZ2=1; ZUN=0; enzPos=enZ2; }
                if      (digitalRead(pKZ3)==HIGH)  { KZ3=0;  }
-               else if (digitalRead(pKZ3)==LOW)   { KZ3=1; ZUN=0; }
+               else if (digitalRead(pKZ3)==LOW)   { KZ3=1; ZUN=0; enzPos=enZ3; }
                if      (digitalRead(pKZ4)==HIGH)  { KZ4=0;  }
-               else if (digitalRead(pKZ4)==LOW)   { KZ4=1; ZUN=0; }
+               else if (digitalRead(pKZ4)==LOW)   { KZ4=1; ZUN=0; enzPos=enZ4; }
                if      (digitalRead(pKZ5)==HIGH)  { KZ5=0;  }
-               else if (digitalRead(pKZ5)==LOW)   { KZ5=1; ZUN=0; }
+               else if (digitalRead(pKZ5)==LOW)   { KZ5=1; ZUN=0; enzPos=enZ5; }
                if ((!KZ0)&&(!KZ1)&&(!KZ2)&&(!KZ3)&&(!KZ4)&&(!KZ5)) { ZUN=1; }
                KX0=1; XUN=0;
             }

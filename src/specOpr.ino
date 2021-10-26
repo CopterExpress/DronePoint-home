@@ -405,6 +405,8 @@ static void CoverUninst()
     {  vTaskDelay(180);
        if ((Vln)&&(Vlz)&&(pDN)&&((cnt1)||(cnt2)))  
          { OprSt="insert container.. .";
+           servLockCon(1); 
+           vTaskDelay(300);
            servLockCon(0); //открыть замок контейнера
            vTaskDelay(910);
            Y2Block();
@@ -433,6 +435,8 @@ static void CoverUninst()
            tempmoveZ="nazad";
            Z3Block();  //Z3 уровень
            Y2Block();
+           vTaskDelay(350);
+           servLockCon(1);
            OprSt="removing container OK";
          }
     }

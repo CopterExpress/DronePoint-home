@@ -238,7 +238,7 @@ static void vSendTask(void *pvParameters) {
 //дебаг формируем строки вывода концевиков 
 static void debugoutKONS() 
       {  char skzout[65];
-         //char skxout[40];
+         char skxout[40];
          char skyout[44];
          char skstol[35];
          //char skntout[35];
@@ -246,22 +246,22 @@ static void debugoutKONS()
          //char sPlout[35];
          char sOVout[35];
          char sdata2[40];
-         char sZ0[30];
-         char sZ1[30];
-         char sZ2[30];
-         char sZ3[30];
+         //char sZ0[30];
+         //char sZ1[30];
+         //char sZ2[30];
+         //char sZ3[30];
                  
-         //sprintf(skzout, "KZout: KZ0=%i KZ1=%i KZ2=%i KZ3=%i KZ4=%i KZ5=%i KX0=%i" , KZ0,KZ1,KZ2,KZ3,KZ4,KZ5,KX0);
-         //Serial.println(skzout);
+         sprintf(skzout, "KZout: KZ0=%i KZ1=%i KZ2=%i KZ3=%i KZ4=%i KZ5=%i KX0=%i enzPos=%i" , KZ0,KZ1,KZ2,KZ3,KZ4,KZ5,KX0,enzPos);
+         Serial.println(skzout);
 
-         sprintf(sZ0, "Z0level: Z0Y3=%i Z0Y1=%i", Z0Y3,Z0Y1);
-         Serial.println(sZ0);
-         sprintf(sZ1, "Z1level: Z1Y1=%i", Z1Y1);
-         Serial.println(sZ1);
-         sprintf(sZ2, "Z0level: Z2Y3=%i Z2Y1=%i", Z2Y3,Z2Y1);
-         Serial.println(sZ2);
-         sprintf(sZ3, "Z0level: Z3Y3=%i Z3Y1=%i", Z3Y3,Z3Y1);
-         Serial.println(sZ3);
+         //sprintf(sZ0, "Z0level: Z0Y3=%i Z0Y1=%i", Z0Y3,Z0Y1);
+         //Serial.println(sZ0);
+         //sprintf(sZ1, "Z1level: Z1Y1=%i", Z1Y1);
+         //Serial.println(sZ1);
+         //sprintf(sZ2, "Z0level: Z2Y3=%i Z2Y1=%i", Z2Y3,Z2Y1);
+         //Serial.println(sZ2);
+         //sprintf(sZ3, "Z0level: Z3Y3=%i Z3Y1=%i", Z3Y3,Z3Y1);
+         //Serial.println(sZ3);
         
          sprintf(skyout, "KYout: KY1=%i KY2=%i KY3=%i cnt1=%i cnt2=%i" , KY1,KY2,KY3,cnt1,cnt2);
          Serial.println(skyout);

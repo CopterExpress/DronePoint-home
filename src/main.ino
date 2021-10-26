@@ -1,6 +1,7 @@
 #include <Arduino.h>
 #include <MapleFreeRTOS900.h>
-#include <ArduinoJson.h> 
+#include <ArduinoJson.h>
+#include <FastLED.h> 
 #include <Wire.h>
 #include <Adafruit_PWMServoDriver.h>
 #include <HX711.h>
@@ -21,6 +22,7 @@ static void vVsensTask(void *pvParameters);
 static void vStateForm(void *pvParameters);
 static void vKCellTask(void *pvParameters);
 static void vScaleTask(void *pvParameters);
+static void vLedTask(void *pvParameters);
 static void miShag(byte direct,int shagSpeed);
 static void gusmotor(byte direct);
 static void ovmotor(byte direct);
@@ -84,6 +86,14 @@ static void unloadingCELL();
 static void loadingCELL();
 static void micdelay(int md);
 static void debugoutKONS(); 
+void fillAll(CRGB newcolor);
+uint32_t getPixColor(int thisPixel);
+void lighter(void);
+void lightBugs(void);
+void colors(void);
+void rainbow(void);
+void sparkles(void);
+void fire(void);
  
 
 
@@ -200,7 +210,7 @@ boolean Flzkp=0;
 #define AenZ 49 // пинA PD1  
 #define BenZ 48 // пинB PD0
 volatile long enzPos=0;
-long enZ0=0,enZ1=819,enZ2=1570,enZ3=2360,enZ4=3169,enZ5=3990;
+long enZ0=0,enZ1=1235,enZ2=2685,enZ3=4333,enZ4=5210,enZ5=7591;
 
 //##################### ПОСАДОЧНЫЙ СТОЛ #################
 //назначаем пины pwm для мотора X механизма захвата 
@@ -333,6 +343,20 @@ boolean Vlv=0,Vln=0,Vld=0,Vlz=0;
 //статус верхнего люка
 String StatusVL="unknown";
 
+//############## ИНИЦИАЛИЗИРУЕМ АДРЕНУЮ ЛЕНТУ #################
+#define NUM_LEDS 60  // количсетво светодиодов в одном отрезке ленты
+#define CURRENT_LIMIT 0
+#define NUM_STRIPS 1
+#define LED_PIN 1 //PA1
+boolean loadingFlag = true;
+bool gReverseDirection = false;
+#define MIN_BRIGHTNESS 5    // минимальная яркость при ручной настройке
+#define BRIGHTNESS 240      // начальная яркость
+#define FIRE_PALETTE 1      // разные типы огня (0 - 3). Попробуй их все! =)
+CRGB leds[NUM_LEDS];
+CRGBPalette16 gPal;
+
+
 //############## CUSTOM_MODE параметры #################
 uint8_t cmx=99;
 uint8_t cmy=99;
@@ -415,6 +439,15 @@ void setup()
   pinMode(kr0O, INPUT);
   pinMode(kr0C, INPUT);
   pinMode(kr0N, INPUT);
+  //адресная лента
+  FastLED.addLeds<WS2811, LED_PIN, GRB>(leds, NUM_LEDS).setCorrection( TypicalLEDStrip );
+  if (CURRENT_LIMIT > 0) FastLED.setMaxPowerInVoltsAndMilliamps(5, CURRENT_LIMIT / NUM_STRIPS);
+  FastLED.setBrightness(180);
+  FastLED.show();
+  if (FIRE_PALETTE == 0) gPal = HeatColors_p;
+    else if (FIRE_PALETTE == 1) gPal = CRGBPalette16( CRGB::Black, CRGB::Red, CRGB::Yellow, CRGB::White);
+    else if (FIRE_PALETTE == 2) gPal = CRGBPalette16( CRGB::Black, CRGB::Blue, CRGB::Aqua,  CRGB::White);
+    else if (FIRE_PALETTE == 3) gPal = CRGBPalette16( CRGB::Black, CRGB::Red, CRGB::White);
   //ADC лазера
   pinMode(pADClz1,INPUT_ANALOG);
   pinMode(pADClz2,INPUT_ANALOG);
@@ -497,6 +530,10 @@ void setup()
   pwm.setPWMFreq(62); // Частота следования импульсов 60 Гц
   delay(120);
   pwm.setPWM(conLock, 0, SERVOMIN);
+  delay(220);
+  pwm.setPWM(conLock, 0, 100);
+  delay(220);
+  pwm.setPWM(conLock, 0, SERVOMIN);
 
   //######### ПРОЦЕССЫ ############## 
   //#define configMINIMAL_STACK_SIZE	( ( unsigned short ) 130 )
@@ -511,15 +548,16 @@ void setup()
   xTaskCreate(vShagMotTask,    "Task08",220,NULL,1,NULL);
   xTaskCreate(vJsonParsingTask,"Task09",400,NULL,1,NULL); 
   xTaskCreate(vSpecOpr,        "Task10",500,NULL,1,NULL);
-  xTaskCreate(vTest,           "Task11",360,NULL,1,NULL);
-  xTaskCreate(vCmbTask,        "Task12",400,NULL,1,NULL);
-  xTaskCreate(vStateForm,      "Task13",220,NULL,1,NULL);
-  xTaskCreate(vScaleTask,      "Task14",220,NULL,1,NULL);
-  xTaskCreate(vAxis_Z,         "Task15",310,NULL,1,NULL);
-  xTaskCreate(vAxis_Y,         "Task16",310,NULL,1,NULL);
-  xTaskCreate(vAxis_Sl,        "Task17",310,NULL,1,NULL);
-  xTaskCreate(vBTcheckTask,    "Task18",310,NULL,1,NULL);
-  xTaskCreate(vVsensTask,      "Task19",310,NULL,1,NULL);
+  xTaskCreate(vLedTask,        "Task11",480,NULL,1,NULL);
+  xTaskCreate(vTest,           "Task12",390,NULL,1,NULL);
+  xTaskCreate(vCmbTask,        "Task13",400,NULL,1,NULL);
+  xTaskCreate(vStateForm,      "Task14",220,NULL,1,NULL);
+  xTaskCreate(vScaleTask,      "Task15",220,NULL,1,NULL);
+  xTaskCreate(vAxis_Z,         "Task16",310,NULL,1,NULL);
+  xTaskCreate(vAxis_Y,         "Task17",310,NULL,1,NULL);
+  xTaskCreate(vAxis_Sl,        "Task18",310,NULL,1,NULL);
+  xTaskCreate(vBTcheckTask,    "Task19",310,NULL,1,NULL);
+  xTaskCreate(vVsensTask,      "Task20",310,NULL,1,NULL);
   vTaskStartScheduler();
 }
  
@@ -527,8 +565,8 @@ void loop()
    {  }   
 
 
-
-/*enum {
+/*
+enum {
 PA0,PA1,PA2,PA3,PA4,PA5,PA6,PA7,PA8,PA9,PA10,PA11,PA12,PA13,PA14,PA15,
 PB0,PB1,PB2,PB3,PB4,PB5,PB6,PB7,PB8,PB9,PB10,PB11,PB12,PB13,PB14,PB15,
 PC0,PC1,PC2,PC3,PC4,PC5,PC6,PC7,PC8,PC9,PC10,PC11,PC12,PC13,PC14,PC15,
@@ -536,7 +574,7 @@ PD0,PD1,PD2,PD3,PD4,PD5,PD6,PD7,PD8,PD9,PD10,PD11,PD12,PD13,PD14,PD15,
 PE0,PE1,PE2,PE3,PE4,PE5,PE6,PE7,PE8,PE9,PE10,PE11,PE12,PE13,PE14,PE15,
 PF0,PF1,PF2,PF3,PF4,PF5,PF6,PF7,PF8,PF9,PF10,PF11,PF12,PF13,PF14,PF15,
 PG0,PG1,PG2,PG3,PG4,PG5,PG6,PG7,PG8,PG9,PG10,PG11,PG12,PG13,PG14,PG15
-};  */   
+};     */
 
 
 
