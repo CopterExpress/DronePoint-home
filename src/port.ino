@@ -192,7 +192,7 @@ static void vSendTask(void *pvParameters) {
                                                 // 3=передняя ячейка 1=задняя
                           root1["platform_payload_state"] = StatusKkr; //концевики каретки
                           root1["count"] = cnum; //счетчик комманд
-                          root1["scales_state"] = units; // данные с весов 
+                          root1["scales_state"] = outkg; // данные с весов 
                           root1["chargingKR0_availability"] = VBkr0; // наличие и напряжение крышки KR0                     
                           nSen+=1;
                         }

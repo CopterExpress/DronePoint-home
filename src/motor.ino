@@ -165,8 +165,8 @@ static void Zjump(int direct)
                        vTaskDelay(direct);
                        motorZ(0);
                        vTaskDelay(200);
-                       if (pzStr<enzPos)
-                          { Serial.println("___UP__OK___"); }
+                       //if (pzStr<enzPos)
+                       //   { Serial.println("___UP__OK___"); }
                     }
      else if (direct<0) { vTaskDelay(200);
                           direct=abs(direct);
@@ -174,8 +174,8 @@ static void Zjump(int direct)
                           vTaskDelay(direct);
                           motorZ(0);
                           vTaskDelay(200);
-                          if (pzStr>enzPos)
-                             { Serial.println("___DW__OK___"); }
+                          //if (pzStr>enzPos)
+                          //   { Serial.println("___DW__OK___"); }
                         }
   }
 

@@ -475,7 +475,7 @@ static void CoverUninst()
                 if (units<0) { units=0.00; }
                 
                 units=units*0.035274; //унции в граммы
-                units=units-200;      //не учитываем вес контейнера
+                units=units-360;      //не учитываем вес контейнера
                 if (units<0) { units=0.00; }
 
                 if ((KZ0)&&(KX0)) //отсек выдачи
@@ -483,12 +483,13 @@ static void CoverUninst()
                      else  { Vm=1; } //разрешенно  
                    }
                 else  { Vm=1; } //разрешенно
-                          
+
+                outkg=units;          
                 
-                if   ((Vo)&&(Vm)) { VD=1; rgbLn(0); } //разрешенно
-                else { VD=0; rgbLn(1); } //запрещенно
+                //if   ((Vo)&&(Vm)) { VD=1; rgbLn(0); } //разрешенно
+                //else { VD=0; rgbLn(1); } //запрещенно
                                 
-                vTaskDelay(700);
+                vTaskDelay(500);
             }
 } 
 
@@ -547,17 +548,11 @@ static void vLaserTask(void *pvParameters) {
                  } 
                    
                
-               if   ((Vo)&&(Vm)) { VD=1; rgbLn(0); } //разрешенно
-               else { VD=0; rgbLn(1); } //запрещенно
+               //if   ((Vo)&&(Vm)) { VD=1; rgbLn(0); } //разрешенно
+               //else { VD=0; rgbLn(1); } //запрещенно
            }
 }
 
-
-//RGB лента
-static void rgbLn(boolean direct) 
-      {  if   (!direct)  {  digitalWrite(pLg, HIGH); digitalWrite(pLr, LOW);  } //зеленый
-         else  {  digitalWrite(pLg, LOW); digitalWrite(pLr, HIGH);  } //красный
-      }
 
 //счетчик комманд 
 static void cmnum()  

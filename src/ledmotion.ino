@@ -17,9 +17,15 @@ static void vLedTask(void *pvParameters) {
    unsigned long timerspd=millis();
    unsigned long ledact=millis();
    unsigned long smf=millis();
-   uint8_t bc1=1;
+   uint8_t bc1=0;
    for (;;) {  
      
+              
+              if       ((Vo)&&(Vm)&&(outkg>150)&&(outkg<2000)) { VD=1; bc1=1; } //разрешенно контейнер загружен
+              else if  ((Vo)&&(Vm)) { VD=1; bc1=5; } //разрешенно контейнер пустой
+              else if  ((!Vo)||(!Vm))  { VD=0; bc1=2; } //запрещенно масса или объем
+              
+              
               //выбор и скорость движения эффекта
               if  ((millis()-timerspd)>25)
                {   if      (bc1==0)  { FastLED.clear();  } 
@@ -29,12 +35,13 @@ static void vLedTask(void *pvParameters) {
                    else if (bc1==4)  { fillAll(CRGB::Aqua);}
                    else if (bc1==5)  { fillAll(CRGB::Green);}
                    else if (bc1==6)  { fillAll(CRGB::Blue);}
-                   else if (bc1==7)  { lighter();        }
-                   else if (bc1==8)  { lightBugs();      }
-                   else if (bc1==9)  { colors();         }
-                   else if (bc1==10) { rainbow();        }
-                   else if (bc1==11) { sparkles();       }
-                   else if (bc1==12) { fire();           }
+                   else if (bc1==7)  { fillAll(CRGB::Black);}
+                   else if (bc1==8)  { lighter();        }
+                   else if (bc1==9)  { lightBugs();      }
+                   else if (bc1==10) { colors();         }
+                   else if (bc1==11) { rainbow();        }
+                   else if (bc1==12) { sparkles();       }
+                   else if (bc1==13) { fire();           }
                    timerspd=millis();
                }
 
@@ -45,12 +52,12 @@ static void vLedTask(void *pvParameters) {
                    ledact=millis(); 
                }
 
-              //смена
+              /*//смена
               if  ((millis()-smf)>5000) 
                {   bc1=bc1+1;
-                   if (bc1>12) { bc1=0; }
+                   if (bc1>13) { bc1=0; }
                    smf=millis(); 
-               }
+               }*/
 
 
             }

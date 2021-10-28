@@ -44,7 +44,6 @@ static void loadSlot();
 static void uploadSlot();
 static void motKR0(byte direct);
 static void lockKR0(boolean direct);
-static void rgbLn(boolean direct);
 static void posKR0();
 static void posOV();
 static void posDN();
@@ -274,6 +273,7 @@ boolean pDN=0;
 #define SCK_PIN   47 //PC15
 HX711 scale;
 long  units; //вес
+long  outkg; //вес аут
 float calibration_factor = 14.4;
 //валидность массы и объема
 boolean VD=1; //разрешенно
@@ -290,9 +290,7 @@ boolean Vo=1; //объем
 #define pADClz8  16 // PB0
 //пин Laser Diode Module KY-008
 #define pLaz  99 // PG3
-//пины RGB ленты
-#define pLg  63 // PD15
-#define pLr  62 // PD14
+
 
 
 //##############__ЗРЯДКА KR0__##########################
@@ -487,11 +485,6 @@ void setup()
   //KY-008
   pinMode(pLaz, OUTPUT);
   digitalWrite(pLaz, LOW);
-  //RGB лента
-  pinMode(pLg, OUTPUT);
-  pinMode(pLr, OUTPUT);
-  digitalWrite(pLg, LOW);
-  digitalWrite(pLr, LOW);
   //весы HX711
   scale.begin(DOUT_PIN,SCK_PIN);
   delay(100);
