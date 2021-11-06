@@ -1,7 +1,3 @@
-// 1. движение и защиты с учетом данных энкодера
-// 2. интеграция custom mode операций cmodeOpr.ino
-// 3. обработка входных параметров custom mode операций port.ino
-
 //прием данных json с уарт паралленый таск
 static void vJsonParsingTask(void *pvParameters) {  
  for (;;) { String input;  
@@ -60,6 +56,53 @@ static void vJsonParsingTask(void *pvParameters) {
                                             
                                      }
                          } 
+
+                    
+                    if (command=="prm_ld")   
+                         {//{"command": "prm_ld", "params": {"x": 0, "y": 3, "z": 3, "nkr": 3}}
+                          //{"command":"cmOpld"}  5 LOAD_DRONE  1мин30сек 
+                          //{"command":"cmOopn"}  2 OPEN возьмет
+                          //{"command":"cmOchan"} 9 CHANGING_BATTERY
+                             if (((input.lastIndexOf("params"))!=-1)&&(gSem==0))
+                                {  if ((input.lastIndexOf("x"))!=-1)   { cmx =  root["params"]["x"];   }
+                                   if ((input.lastIndexOf("y"))!=-1)   { cmy =  root["params"]["y"];   }
+                                   if ((input.lastIndexOf("z"))!=-1)   { cmz =  root["params"]["z"];   }
+                                   if ((input.lastIndexOf("nkr"))!=-1) { cmkr = root["params"]["nkr"]; }
+                                }
+                         }
+
+                     if (command=="prm_ud")   
+                         {//{"command": "prm_ud", "params": {"x": 0, "y": 3, "z": 3, "nkr": 3}}
+                          //{"command":"cmOpud"} 6 UNLOAD_DRONE  1мин38сек 
+                          //{"command":"cmOcls"} 4 CLOSE выдаст
+                             if (((input.lastIndexOf("params"))!=-1)&&(gSem==0))
+                                {  if ((input.lastIndexOf("x"))!=-1)   { cmx =  root["params"]["x"];   }
+                                   if ((input.lastIndexOf("y"))!=-1)   { cmy =  root["params"]["y"];   }
+                                   if ((input.lastIndexOf("z"))!=-1)   { cmz =  root["params"]["z"];   }
+                                   if ((input.lastIndexOf("nkr"))!=-1) { cmkr = root["params"]["nkr"]; }
+                                }
+                         }
+
+                     if (command=="prm_untu")   
+                         {//{"command": "prm_untu", "params": {"x": 0, "y": 3, "z": 3}}
+                          //{"command":"cmOpuntu"} 8 UNLOAD_TO_USER 1мин
+                             if (((input.lastIndexOf("params"))!=-1)&&(gSem==0))
+                                {  if ((input.lastIndexOf("x"))!=-1)   { cmx = root["params"]["x"];   }
+                                   if ((input.lastIndexOf("y"))!=-1)   { cmy = root["params"]["y"];   }
+                                   if ((input.lastIndexOf("z"))!=-1)   { cmz = root["params"]["z"];   }
+                                }
+                         }
+
+                     if (command=="prm_getfu")   
+                         {//{"command": "prm_getfu", "params": {"x": 0, "y": 3, "z": 3}}
+                          //{"command":"cmOpgetfu"} 7 GET_FROM_USER 1мин
+                             if (((input.lastIndexOf("params"))!=-1)&&(gSem==0))
+                                {  if ((input.lastIndexOf("x"))!=-1)   { cmx = root["params"]["x"];   }
+                                   if ((input.lastIndexOf("y"))!=-1)   { cmy = root["params"]["y"];   }
+                                   if ((input.lastIndexOf("z"))!=-1)   { cmz = root["params"]["z"];   }
+                                }
+                         }
+
                      
                      //не блокирующие комманды перемещения ось Z (не рекомендуется) 
                      if      (command=="Z0")  { AcZ=0; } //{"command":"Z0"}
@@ -193,7 +236,7 @@ static void vSendTask(void *pvParameters) {
                           root1["platform_payload_state"] = StatusKkr; //концевики каретки
                           root1["count"] = cnum; //счетчик комманд
                           root1["scales_state"] = outkg; // данные с весов 
-                          root1["chargingKR0_availability"] = VBkr0; // наличие и напряжение крышки KR0                     
+                          root1["chargingKR0_availability"] = VBkr0; // наличие и напряжение на крышки KR0                     
                           nSen+=1;
                         }
                      else if (nSen==2)
@@ -244,7 +287,8 @@ static void debugoutKONS()
          //char skntout[35];
          char sVlout[40];
          //char sPlout[35];
-         char sOVout[35];
+         //char sOVout[35];
+         char sCMvout[35];
          char sdata2[40];
          //char sZ0[30];
          //char sZ1[30];
@@ -273,9 +317,11 @@ static void debugoutKONS()
          //sprintf(sPlout, "Plout: plA=%i plB=%i" , plA,plB);
          //Serial.println(sPlout);
          //vTaskDelay(130);
-
-         sprintf(sOVout, "OVout: ovv=%i ovn=%i" , ovv,ovn);
-         Serial.println(sOVout);
+         
+         sprintf(sCMvout, "sCMvout: cmx=%i cmy=%i cmz=%i cmkr=%i" , cmx,cmy,cmz,cmkr);
+         Serial.println(sCMvout);
+         //sprintf(sOVout, "OVout: ovv=%i ovn=%i" , ovv,ovn);
+         //Serial.println(sOVout);
          //vTaskDelay(130);
 
          sprintf(sdata2, "KRysh: KR0n=%i KR0c=%i KR0o=%i" , KR0n,KR0c,KR0o);

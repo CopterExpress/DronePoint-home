@@ -7,14 +7,14 @@ static void cmbZ4X0() {  Y2Block(); X0Block(); Z4Block();  }
 static void cmbZ5X0() {  Y2Block(); X0Block(); Z5Block();  } 
 
 //########### выход на позиции операций с крышкой ################
-static void posKR0()  {  Y2Block(); Z3Block(); X0Block(); closeVL(); }
+static void posKR0()  {  Y2Block(); Z3Block(); X0Block(); closeVL(); centr(); }
 //есть две функции CoverUninst() и CoverInst() снятие и установка крышкек 
 //номер крышки определяется по концевикам позиции (переменная pKR)
 
 //########### выход на позицию отсека выдачи ######################
 static void posOV()  {  Y2Block(); Z0Block(); X0Block(); stY="3";  }
 //########### выход на позицию операций с коптером ################
-static void posDN()  {  Y2Block(); Z3Block(); X0Block(); }
+static void posDN()  {  Y2Block(); Z3Block(); X0Block(); openVL(); centr(); }
 
 
 //мониторинг активного состояния AcCmb и запуск функций 

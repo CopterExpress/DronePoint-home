@@ -33,6 +33,13 @@ static void vlvz(boolean direct);
 static void ovsolenoid(boolean direct);
 static void ovopcl(boolean direct);
 static void servLockCon(boolean direct);
+static void cmOpld();
+static void cmOpud();
+static void cmOpuntu();
+static void cmOpgetfu();
+static void cmOcls();
+static void cmOopn();
+static void cmOchan();
 static void encoderZ();
 static void CoverInst();
 static void CoverUninst();
@@ -49,6 +56,7 @@ static void posOV();
 static void posDN();
 static void vAxis_Sl(void *pvParameters);
 static void vBTcheckTask(void *pvParameters);
+static void motionCM(uint8_t mz,uint8_t mx);
 static void X0Block();
 static void Z0Block();
 static void Z1Block();
@@ -551,6 +559,7 @@ void setup()
   xTaskCreate(vAxis_Sl,        "Task18",310,NULL,1,NULL);
   xTaskCreate(vBTcheckTask,    "Task19",310,NULL,1,NULL);
   xTaskCreate(vVsensTask,      "Task20",310,NULL,1,NULL);
+
   vTaskStartScheduler();
 }
  

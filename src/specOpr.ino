@@ -605,6 +605,13 @@ static void vSpecOpr(void *pvParameters) {
                      else if ((AcSpec=="CDN")&&(gSem==0))   { gSem=1; contenerDN();   AcSpec="none";  gSem=0; cmnum(); }
                      else if ((AcSpec=="loadSlot")&&(gSem==0))   { gSem=1; loadSlot();   AcSpec="none";  gSem=0; cmnum(); }
                      else if ((AcSpec=="uploadSlot")&&(gSem==0)) { gSem=1; uploadSlot(); AcSpec="none";  gSem=0; cmnum(); }
+                     else if ((AcSpec=="cmOpld")&&(gSem==0))     { gSem=1; cmOpld();     AcSpec="none";  gSem=0; cmnum(); }
+                     else if ((AcSpec=="cmOpud")&&(gSem==0))     { gSem=1; cmOpud();     AcSpec="none";  gSem=0; cmnum(); }
+                     else if ((AcSpec=="cmOpuntu")&&(gSem==0))   { gSem=1; cmOpuntu();   AcSpec="none";  gSem=0; cmnum(); }
+                     else if ((AcSpec=="cmOpgetfu")&&(gSem==0))  { gSem=1; cmOpgetfu();  AcSpec="none";  gSem=0; cmnum(); }
+                     else if ((AcSpec=="cmOcls")&&(gSem==0))     { gSem=1; cmOcls();     AcSpec="none";  gSem=0; cmnum(); }
+                     else if ((AcSpec=="cmOopn")&&(gSem==0))     { gSem=1; cmOopn();     AcSpec="none";  gSem=0; cmnum(); }
+                     else if ((AcSpec=="cmOchan")&&(gSem==0))    { gSem=1; cmOchan();    AcSpec="none";  gSem=0; cmnum(); }
                      vTaskDelay(120);
             }
 }
