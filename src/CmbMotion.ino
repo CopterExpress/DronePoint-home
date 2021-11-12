@@ -7,7 +7,7 @@ static void cmbZ4X0() {  Y2Block(); X0Block(); Z4Block();  }
 static void cmbZ5X0() {  Y2Block(); X0Block(); Z5Block();  } 
 
 //########### выход на позиции операций с крышкой ################
-static void posKR0()  {  Y2Block(); Z3Block(); X0Block(); closeVL(); centr(); }
+static void posKR0()  {  Y2Block(); Z3Block(); X0Block(); closeVL(); }
 //есть две функции CoverUninst() и CoverInst() снятие и установка крышкек 
 //номер крышки определяется по концевикам позиции (переменная pKR)
 

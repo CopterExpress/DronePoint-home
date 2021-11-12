@@ -60,9 +60,9 @@ static void vJsonParsingTask(void *pvParameters) {
                     
                     if (command=="prm_ld")   
                          {//{"command": "prm_ld", "params": {"x": 0, "y": 3, "z": 3, "nkr": 3}}
-                          //{"command":"cmOpld"}  5 LOAD_DRONE  1мин30сек 
-                          //{"command":"cmOopn"}  2 OPEN возьмет
-                          //{"command":"cmOchan"} 9 CHANGING_BATTERY
+                          //{"command":"cmOpld"}  5 LOAD_DRONE   
+                          //{"command":"cmOopn"}  2 OPEN установка крышки
+                          //{"command":"cmOchan"} 9 CHANGING_BATTERY перемещение
                              if (((input.lastIndexOf("params"))!=-1)&&(gSem==0))
                                 {  if ((input.lastIndexOf("x"))!=-1)   { cmx =  root["params"]["x"];   }
                                    if ((input.lastIndexOf("y"))!=-1)   { cmy =  root["params"]["y"];   }
@@ -73,8 +73,8 @@ static void vJsonParsingTask(void *pvParameters) {
 
                      if (command=="prm_ud")   
                          {//{"command": "prm_ud", "params": {"x": 0, "y": 3, "z": 3, "nkr": 3}}
-                          //{"command":"cmOpud"} 6 UNLOAD_DRONE  1мин38сек 
-                          //{"command":"cmOcls"} 4 CLOSE выдаст
+                          //{"command":"cmOpud"} 6 UNLOAD_DRONE   
+                          //{"command":"cmOcls"} 4 CLOSE снятие крышки
                              if (((input.lastIndexOf("params"))!=-1)&&(gSem==0))
                                 {  if ((input.lastIndexOf("x"))!=-1)   { cmx =  root["params"]["x"];   }
                                    if ((input.lastIndexOf("y"))!=-1)   { cmy =  root["params"]["y"];   }
@@ -85,7 +85,7 @@ static void vJsonParsingTask(void *pvParameters) {
 
                      if (command=="prm_untu")   
                          {//{"command": "prm_untu", "params": {"x": 0, "y": 3, "z": 3}}
-                          //{"command":"cmOpuntu"} 8 UNLOAD_TO_USER 1мин
+                          //{"command":"cmOpuntu"} 8 UNLOAD_TO_USER 
                              if (((input.lastIndexOf("params"))!=-1)&&(gSem==0))
                                 {  if ((input.lastIndexOf("x"))!=-1)   { cmx = root["params"]["x"];   }
                                    if ((input.lastIndexOf("y"))!=-1)   { cmy = root["params"]["y"];   }
@@ -95,7 +95,7 @@ static void vJsonParsingTask(void *pvParameters) {
 
                      if (command=="prm_getfu")   
                          {//{"command": "prm_getfu", "params": {"x": 0, "y": 3, "z": 3}}
-                          //{"command":"cmOpgetfu"} 7 GET_FROM_USER 1мин
+                          //{"command":"cmOpgetfu"} 7 GET_FROM_USER 
                              if (((input.lastIndexOf("params"))!=-1)&&(gSem==0))
                                 {  if ((input.lastIndexOf("x"))!=-1)   { cmx = root["params"]["x"];   }
                                    if ((input.lastIndexOf("y"))!=-1)   { cmy = root["params"]["y"];   }
@@ -160,13 +160,13 @@ static void vJsonParsingTask(void *pvParameters) {
                      else if (command=="load_slot")    { AcSpec="loadSlot"; }   //{"command":"load_slot"} загрузка в отсек выдачи
                      else if (command=="upload_slot")  { AcSpec="uploadSlot"; } //{"command":"upload_slot"} выгрузка из отсека выдачи
                      //############## CUSTOM_MODE операции ##################################
-                     else if (command=="cmOpld")     { AcSpec="cmOpld";     }  //{"command":"cmOpld"}
-                     else if (command=="cmOpud")     { AcSpec="cmOpud";     }  //{"command":"cmOpud"}
-                     else if (command=="cmOpuntu")   { AcSpec="cmOpuntu";   }  //{"command":"cmOpuntu"}
-                     else if (command=="cmOpgetfu")  { AcSpec="cmOpgetfu";  }  //{"command":"cmOpgetfu"}
-                     else if (command=="cmOcls")     { AcSpec="cmOcls";     }  //{"command":"cmOcls"}
-                     else if (command=="cmOopn")     { AcSpec="cmOopn";     }  //{"command":"cmOopn"}
-                     else if (command=="cmOchan")    { AcSpec="cmOchan";    }  //{"command":"cmOchan"}
+                     else if (command=="cmOpld")     { AcSpec="cmOpld";     }  //{"command":"cmOpld"}    LOAD_DRONE
+                     else if (command=="cmOpud")     { AcSpec="cmOpud";     }  //{"command":"cmOpud"}    UNLOAD_DRONE
+                     else if (command=="cmOpuntu")   { AcSpec="cmOpuntu";   }  //{"command":"cmOpuntu"}  UNLOAD_TO_USER
+                     else if (command=="cmOpgetfu")  { AcSpec="cmOpgetfu";  }  //{"command":"cmOpgetfu"} GET_FROM_USER
+                     else if (command=="cmOcls")     { AcSpec="cmOcls";     }  //{"command":"cmOcls"}    CLOSE
+                     else if (command=="cmOopn")     { AcSpec="cmOopn";     }  //{"command":"cmOopn"}    OPEN
+                     else if (command=="cmOchan")    { AcSpec="cmOchan";    }  //{"command":"cmOchan"}   CHANGING_BATTERY
                   
                      //########### комманды тестирования отдельных элементов и сценариев ########################
                      else if (command=="Ztest")    { AcTest="Ztest"; } //{"command":"Ztest"} тест оси Z

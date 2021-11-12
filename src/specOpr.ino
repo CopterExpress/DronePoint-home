@@ -57,6 +57,7 @@ static void vygruzkaKP()
                  tempmoveZ="nazad";
                  Zcorrect();
                  OprSt="vygruzka " + meZ + StatusX + "Y3 OK";
+                 stY=="2";
              }
        }  } 
 
@@ -109,6 +110,7 @@ static void zagruzkaKP()
                   Zcorrect();
                   Flzkp=0;
                   OprSt="zagruzka " + meZ + StatusX + "Y3 OK";
+                  stY=="2";
                }
        }  }
 
@@ -156,6 +158,7 @@ static void vygruzkaKZ()
                  tempmoveZ="nazad";
                  Zcorrect();
                  OprSt="vygruzka " + meZ + StatusX + "Y1 OK";
+                 stY=="2";
              }
        }  } 
 
@@ -208,6 +211,7 @@ static void zagruzkaKZ()
                   Zcorrect();
                   Flzkp=0;
                   OprSt="zagruzka " + meZ + StatusX + "Y1 OK";
+                  stY=="2";
                }
        }  }
 
