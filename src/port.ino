@@ -59,7 +59,7 @@ static void vJsonParsingTask(void *pvParameters) {
 
                     
                     if (command=="prm_ld")   
-                         {//{"command": "prm_ld", "params": {"x": 0, "y": 3, "z": 3, "nkr": 3}}
+                         {//{"command": "prm_ld", "params": {"x": 0, "y": 2, "z": 3, "nkr": 0}}
                           //{"command":"cmOpld"}  5 LOAD_DRONE   
                           //{"command":"cmOopn"}  2 OPEN установка крышки
                           //{"command":"cmOchan"} 9 CHANGING_BATTERY перемещение

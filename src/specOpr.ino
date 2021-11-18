@@ -57,7 +57,7 @@ static void vygruzkaKP()
                  tempmoveZ="nazad";
                  Zcorrect();
                  OprSt="vygruzka " + meZ + StatusX + "Y3 OK";
-                 stY=="2";
+                 stY="2";
              }
        }  } 
 
@@ -110,7 +110,7 @@ static void zagruzkaKP()
                   Zcorrect();
                   Flzkp=0;
                   OprSt="zagruzka " + meZ + StatusX + "Y3 OK";
-                  stY=="2";
+                  stY="2";
                }
        }  }
 
@@ -158,7 +158,7 @@ static void vygruzkaKZ()
                  tempmoveZ="nazad";
                  Zcorrect();
                  OprSt="vygruzka " + meZ + StatusX + "Y1 OK";
-                 stY=="2";
+                 stY="2";
              }
        }  } 
 
@@ -211,7 +211,7 @@ static void zagruzkaKZ()
                   Zcorrect();
                   Flzkp=0;
                   OprSt="zagruzka " + meZ + StatusX + "Y1 OK";
-                  stY=="2";
+                  stY="2";
                }
        }  }
 
@@ -372,7 +372,7 @@ static void ovopcl(boolean direct)
 //установка крышки в зарядку 
 static void CoverInst()   
   {     vTaskDelay(180);
-        if ((!KR0n)&&(pKR=="KR0"))
+        if ((!KR0n)&&(pKR=="KR0")&&((cnt1)||(cnt2)))
             { OprSt="coverKR0 installed.. .";
               vTaskDelay(120);
               lockKR0(1);//открываем замок 
@@ -386,10 +386,11 @@ static void CoverInst()
             }
   } 
 
-//снятие крышки c зарядки   
+//снятие крышки c зарядки 
+//здесь необходима также проверка крышки на контейнере  
 static void CoverUninst()   
   {     vTaskDelay(180);
-        if ((KR0n)&&(pKR=="KR0")) 
+        if ((KR0n)&&(pKR=="KR0")&&((cnt1)||(cnt2))) 
              { OprSt="coverKR0 uninstalled.. .";
                vTaskDelay(120);
                Z4Block();  //Z4 уровень крышек

@@ -88,20 +88,14 @@ static void Ztest()
      vTaskDelay(2000); */
    }
 
-//тест ZKtest
+//тест ZKtest отсек выдачи
 static void ZKtest()  
-   { /*cmbZ3X2();
-     vTaskDelay(1000);
-     cmbZ3X4();
-     vTaskDelay(1000);
-     cmbZ1X4();
-     vTaskDelay(1000);
-     cmbZ1X3();
-     vTaskDelay(1000);
-     cmbZ2X3();
-     vTaskDelay(1000);
-     cmbZ2X4();
-     zagruzkaKP(); */
+   { uint8_t i=0; 
+     for  (i; i<10; i++) 
+      {  ovopcl(1);  //открыть люк отсек выдачи
+         vTaskDelay(5000);
+         ovopcl(0);
+      }
    }
 
 //тест PLtest
@@ -130,27 +124,15 @@ static void testSol()
           trig=!trig;
         }
 
-//тест устанока снятие крышкиKR3
+//тест севоприводов
 static void KR3test()  
    { uint8_t i=0; 
-     for  (i; i<10; i++) 
-      { /*cmbZ2X4();
-        vTaskDelay(1000);
-        zagruzkaKP();
+     for  (i; i<20; i++) 
+      { servLockCon(0); //открыть замок контейнера
         vTaskDelay(2000);
-        vygruzkaKP();
+        servLockCon(1); //закрыть замок контейнера
         vTaskDelay(2000);
-        BBlock();
-        vTaskDelay(1000);
-        posKR3();
-        CoverUninst();
-        vTaskDelay(2000);
-        CoverInst();
-        vTaskDelay(2000);
-        CoverUninst();
-        vTaskDelay(2000);
-        CoverInst();
-        vTaskDelay(2000); */
+        
       }
    }
 
@@ -381,7 +363,8 @@ static void vBTcheckTask(void *pvParameters) {
                if  (digitalRead(pBT3)==LOW)
                       { //motKR0(2); vTaskDelay(44); motKR0(0);   //закрыть
                         //motorY(2); vTaskDelay(44); motorY(0); //назат
-                        servLockCon(1); //закрыть замок контейнера
+                        //servLockCon(1); //закрыть замок контейнера
+                        KR3test(); //тест севоприводов
                         Serial.println("BT3");
                       }
 
